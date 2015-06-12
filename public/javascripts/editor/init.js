@@ -10,15 +10,15 @@ var empty = {
     className: "wall"
 }, playerSpawn = {
     effect: function(i,j){
-        playerSpawnPoint.x = i;
-        playerSpawnPoint.y = j;
+        playerSpawnPoint.x = parseInt(i);
+        playerSpawnPoint.y = parseInt(j);
     },
     className: "playerSpawn"
 }, mobSpawn = {
     effect: function(i,j){
         var indexOrNot = mobSpawnIsDefined(i,j);
         if( indexOrNot == -1)
-            mobSpawnPoints.push({x:i,y:j});
+            mobSpawnPoints.push({x:parseInt(i),y:parseInt(j)});
         else
             mobSpawnPoints.splice(indexOrNot,1);
     },
@@ -109,8 +109,8 @@ function exportToJson(){
         map: map,
         width: map.length,
         height: map[0].length,
-        playerSpawn: playerSpawnPoint,
-        mobSpawnPoint: mobSpawnPoints,
+        playerSpawnPoint: playerSpawnPoint,
+        mobSpawnPoints: mobSpawnPoints,
         name: "temp",
         rating: []
     })

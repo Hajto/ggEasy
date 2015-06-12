@@ -1,5 +1,6 @@
 package controllers
 
+import model.Level
 import play.api._
 import play.api.libs.json._
 import play.modules.reactivemongo.json.BSONFormats._
@@ -15,6 +16,9 @@ import scala.concurrent.Future
 
 import scala.io.Source
 
+import model.Level.format
+import model.Point.format
+
 object Application extends Controller with MongoController {
 
   def $(a: (String, JsValueWrapper)*) = Json.obj(a: _*)
@@ -24,7 +28,29 @@ object Application extends Controller with MongoController {
   def maps = collection("maps")
 
   def index = Action.async {
-    Future.successful(Ok(views.html.editor()))
+    Future.successful(Ok(views.html.editor("default")))
+  }
+
+  def upsertMap = Action.async(parse.json) { implicit req =>
+    req.body.validate[Level] match {
+      case JsSuccess(level, _) => {
+        collection("default").update($("name" -> level.name), $("$set" -> Json.toJson(level)), upsert = true).map { last =>
+          if (last.ok)
+            Ok("ok")
+          else
+            BadRequest("DBError")
+        }
+      }
+      case err@JsError(_) => Future.successful(BadRequest(err.toString()))
+    }
+  }
+
+  def selectAll(mapName: String) = Action.async {
+    val cursor: Cursor[JsObject] = db.collection[JSONCollection](mapName).find(Json.obj()).cursor[JsObject]
+    val futureSlavesList: Future[List[JsObject]] = cursor.collect[List]()
+    futureSlavesList.map { pins =>
+      Ok(Json.toJson(pins))
+    }
   }
 
 }

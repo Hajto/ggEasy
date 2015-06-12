@@ -4,6 +4,6 @@
 
 # Home page
 GET         /                        controllers.Application.index
-
+POST        /upsert                  controllers.Application.upsertMap
 
 GET         /assets/*file            controllers.Assets.at(path="/public", file)
