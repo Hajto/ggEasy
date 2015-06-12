@@ -107,7 +107,11 @@ function mobSpawnIsDefined(x,y){
 function exportToJson(){
     return JSON.stringify({
         map: map,
+        width: map.length,
+        height: map[0].length,
         playerSpawn: playerSpawnPoint,
-        mobSpawnPoint: mobSpawnPoints
+        mobSpawnPoint: mobSpawnPoints,
+        name: "temp",
+        rating: []
     })
 }
