@@ -6,6 +6,7 @@
     <body onload="init()">
         <div id="editorContainer">
             <div id="sizeSetter">
+                Każda mapa MUSI być prostokątem<br/>, poniżej wpisz ilość segmentów szerokośc <br/> i ilość segmentów wysokości
                 <form>
                     <label for="mapWidth">Szerokość mapy: </label>
                     <input id="mapWidth" name="mapWidth" type="number" /> <br />
@@ -13,6 +14,9 @@
                     <input id="mapHeight" name="mapHeight" type="number" /> <br/>
                     <button type="button" id="generateTable">Generuj plansze</button>
                 </form>
+                    <button id="wallPlacer"> Wall </button>
+                    <button id="mobSpawnPointPlacer">Mob Spawn</button>
+                    <button id="playerSpawnPointPlacer">Player Spawn</button>
                 <div id="64Warning" style="display: none"> Wysokość i szerokość muszą być wielokrotnościami liczby 64</div>
             </div>
             <div id="wallEditor">

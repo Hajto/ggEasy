@@ -4,5 +4,21 @@
 #wallEditor table td {
     width:32px;
     height: 32px;
-    background: lightgray;
+}
+
+#wallEditor {
+    background: #bcbcbc;
+}
+
+td.empty {
+    background: white;
+}
+td.wall {
+    background: black;
+}
+td.playerSpawn {
+    background: green;
+}
+td.mobSpawn {
+    background: red;
 }
