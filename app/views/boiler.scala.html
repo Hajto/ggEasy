@@ -1,21 +1,13 @@
-@(repoName: String)
+@()(headerInjector: Html)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Fridge</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.min.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/pin.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/textEditor.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
         <script src="@routes.Assets.at("javascripts/init.js")"></script>
-        <script src="@routes.Assets.at("libs/tinymce/tinymce.min.js")"></script>
-
-        <script src="@routes.Assets.at("javascripts/view/pin.js")"></script>
-
-        <script src="@routes.Assets.at("javascripts/connections/ajaxAPI.js")"></script>
-        <script src="@routes.Assets.at("javascripts/connections/dataConnector.js")"></script>
 
         <style>
             html,body {
@@ -24,8 +16,9 @@
                 height: 100%;
             }
         </style>
+        @headerInjector
     </head>
     <body onload="init()">
-        
+        @content
     </body>
 </html>

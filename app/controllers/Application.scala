@@ -18,11 +18,13 @@ import scala.io.Source
 object Application extends Controller with MongoController {
 
   def $(a: (String, JsValueWrapper)*) = Json.obj(a: _*)
-  val idReads : Reads[String] = (JsPath \ "_id").read[String]
 
+  val idReads: Reads[String] = (JsPath \ "_id").read[String]
   def collection(repo: String): JSONCollection = db.collection[JSONCollection](repo)
-  def stats : JSONCollection = db.collection[JSONCollection]("super-uber-ille")
+  def maps = collection("maps")
 
-  def index = Action.async Future.successful(Ok("Ok"))
+  def index = Action.async {
+    Future.successful(Ok(views.html.editor()))
+  }
 
 }

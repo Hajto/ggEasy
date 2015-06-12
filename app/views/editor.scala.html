@@ -1,0 +1,15 @@
+@()
+@boiler(){
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/editor.css")">
+}{
+    <div id="editorContainer">
+        <div id="sizeSetter">
+            <form>
+                <label for="mapWidth">Szerokość mapy: </label>
+                <input id="mapWidth" name="mapWidth" type="number" /> <br />
+                <label for="mapHeight">Wysokość mapy: </label>
+                <input id="mapHeight" name="mapHeight" type="number" />
+            </form>
+        </div>
+    </div>
+}
