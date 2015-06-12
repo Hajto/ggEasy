@@ -1,15 +1,24 @@
 @()
-@boiler(){
+@boiler() {
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/editor.css")">
-}{
-    <div id="editorContainer">
-        <div id="sizeSetter">
-            <form>
-                <label for="mapWidth">Szerokość mapy: </label>
-                <input id="mapWidth" name="mapWidth" type="number" /> <br />
-                <label for="mapHeight">Wysokość mapy: </label>
-                <input id="mapHeight" name="mapHeight" type="number" />
-            </form>
+    <script src="@routes.Assets.at("javascripts/editor/init.js")"></script>
+} {
+    <body onload="init()">
+        <div id="editorContainer">
+            <div id="sizeSetter">
+                <form>
+                    <label for="mapWidth">Szerokość mapy: </label>
+                    <input id="mapWidth" name="mapWidth" type="number" /> <br />
+                    <label for="mapHeight">Wysokość mapy: </label>
+                    <input id="mapHeight" name="mapHeight" type="number" /> <br/>
+                    <button type="button" id="generateTable">Generuj plansze</button>
+                </form>
+                <div id="64Warning" style="display: none"> Wysokość i szerokość muszą być wielokrotnościami liczby 64</div>
+            </div>
+            <div id="wallEditor">
+
+            </div>
         </div>
-    </div>
+    </body>
+
 }

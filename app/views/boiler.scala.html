@@ -7,8 +7,6 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.min.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
-        <script src="@routes.Assets.at("javascripts/init.js")"></script>
-
         <style>
             html,body {
                 margin: 0;
@@ -18,7 +16,5 @@
         </style>
         @headerInjector
     </head>
-    <body onload="init()">
-        @content
-    </body>
+    @content
 </html>
