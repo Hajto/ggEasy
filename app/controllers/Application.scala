@@ -28,7 +28,14 @@ object Application extends Controller with MongoController {
   def maps = collection("maps")
 
   def index = Action.async {
-    Future.successful(Ok(views.html.editor("default")))
+    val cursor: Cursor[JsObject] = collection("default").find($("name"->"temp")).cursor[JsObject]
+    val futureSlavesList: Future[List[JsObject]] = cursor.collect[List]()
+    futureSlavesList.map { pins =>
+      if(pins.nonEmpty)
+        Ok(views.html.editor("default", Html(Json.toJson(pins.head).toString())))
+      else
+        Ok(views.html.editor("default", Html("{}")))
+    }
   }
 
   def upsertMap = Action.async(parse.json) { implicit req =>
@@ -45,12 +52,6 @@ object Application extends Controller with MongoController {
     }
   }
 
-  def selectAll(mapName: String) = Action.async {
-    val cursor: Cursor[JsObject] = db.collection[JSONCollection](mapName).find(Json.obj()).cursor[JsObject]
-    val futureSlavesList: Future[List[JsObject]] = cursor.collect[List]()
-    futureSlavesList.map { pins =>
-      Ok(Json.toJson(pins))
-    }
-  }
+  //def selectAll(mapName: String) =
 
 }

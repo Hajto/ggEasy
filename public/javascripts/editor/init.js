@@ -34,6 +34,21 @@ var playerSpawnPoint = {
 var mobSpawnPoints = [];
 
 function init(){
+    var width = repoData.width;
+    var height = repoData.height;
+
+    playerSpawnPoint = repoData.playerSpawnPoint;
+    mobSpawnPoints = repoData.mobSpawnPoints;
+    var table = generateEditTable(width, height);
+    var holder = document.getElementById("wallEditor");
+    holder.innerHTML = "";
+    holder.appendChild(table);
+    document.getElementById("64Warning").style.display = "none";
+
+    for(var i = 0; i < mobSpawnPoints.length; i++){
+        var spawn = mobSpawnPoints[i];
+        document.getElementById(spawn.x+ " " + spawn.y).className = "mobSpawn"
+    }
 
     document.getElementById("generateTable").addEventListener("click",function(){
         var width = parseInt(document.getElementById("mapWidth").value);
@@ -66,12 +81,18 @@ function init(){
             var row = document.createElement("tr");
             map[i] = [];
             for (var j = 0; j < height; j++) {
-                map[i][j] = 1;
                 var cell = document.createElement("td");
+                if(repoData.map[i][j] == undefined || repoData.map[i][j]) {
+                    map[i][j] = 1;
+                    cell.className = "empty";
+                } else if(repoData.map[i][j] == 0) {
+                    map[i][j] = 0;
+                    cell.className = "wall";
+                }
+
+                cell.id = i+" "+j;
                 cell.setAttribute("data-row", i.toString());
                 cell.setAttribute("data-col", j.toString());
-                cell.setAttribute("data-selected","false");
-                cell.className = "empty";
 
                 cell.addEventListener("click",function(event){
                     var target = event.target;
@@ -84,17 +105,18 @@ function init(){
             }
             table.appendChild(row);
         }
+
         return table;
     }
 
 }
 
 function applyEffect(i,j,target){
-    if(["wall","playerSpawn","mobSpawn"].indexOf(target.className) == -1)
+    if(["wall","playerSpawn","mobSpawn"].indexOf(target.className) == -1){
         target.className = nextPlace.className;
-    else
+        nextPlace.effect(i,j)
+    } else
         target.className = "empty";
-    nextPlace.effect(i,j)
 }
 
 function mobSpawnIsDefined(x,y){
@@ -111,7 +133,6 @@ function exportToJson(){
         height: map[0].length,
         playerSpawnPoint: playerSpawnPoint,
         mobSpawnPoints: mobSpawnPoints,
-        name: "temp",
-        rating: []
+        name: "temp"
     })
 }

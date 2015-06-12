@@ -18,7 +18,7 @@ function ajaxAPI(haitoRequest){
     xmlhttp.open(haitoRequest.method,haitoRequest.url,true);
     xmlhttp.setRequestHeader("Content-type","application/json");
     xmlhttp.setRequestHeader("Accept","application/json, application/json");
-    xmlhttp.send(JSON.stringify(haitoRequest.data));
+    xmlhttp.send(haitoRequest.data);
 }
 
 function _haitoRequest(url, method, data, onSuccess, onError){
