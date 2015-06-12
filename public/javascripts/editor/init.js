@@ -27,24 +27,22 @@ var empty = {
 
 var map = [];
 var nextPlace = wall;
-var playerSpawnPoint = {
-    x:0,
-    y:0
-};
-var mobSpawnPoints = [];
+var playerSpawnPoint;
+var mobSpawnPoints;
 
 function init(){
     var width = repoData.width;
     var height = repoData.height;
 
-    playerSpawnPoint = repoData.playerSpawnPoint;
-    mobSpawnPoints = repoData.mobSpawnPoints;
+    playerSpawnPoint = repoData.playerSpawnPoint != undefined ? repoData.playerSpawnPoint : {x: 0, y: 0};
+    mobSpawnPoints = repoData.mobSpawnPoints != undefined ? repoData.mobSpawnPoints : [];
     var table = generateEditTable(width, height);
     var holder = document.getElementById("wallEditor");
     holder.innerHTML = "";
     holder.appendChild(table);
     document.getElementById("64Warning").style.display = "none";
 
+    document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "playerSpawn";
     for(var i = 0; i < mobSpawnPoints.length; i++){
         var spawn = mobSpawnPoints[i];
         document.getElementById(spawn.x+ " " + spawn.y).className = "mobSpawn"
@@ -82,12 +80,12 @@ function init(){
             map[i] = [];
             for (var j = 0; j < height; j++) {
                 var cell = document.createElement("td");
-                if(repoData.map[i][j] == undefined || repoData.map[i][j]) {
-                    map[i][j] = 1;
-                    cell.className = "empty";
-                } else if(repoData.map[i][j] == 0) {
+                if(repoData.map != undefined && repoData.map[i][j] == 0) {
                     map[i][j] = 0;
                     cell.className = "wall";
+                } else {
+                    map[i][j] = 1;
+                    cell.className = "empty";
                 }
 
                 cell.id = i+" "+j;
@@ -133,6 +131,6 @@ function exportToJson(){
         height: map[0].length,
         playerSpawnPoint: playerSpawnPoint,
         mobSpawnPoints: mobSpawnPoints,
-        name: "temp"
+        name: document.getElementById("mapName").value
     })
 }
