@@ -7,11 +7,12 @@ var Bullet = Class.extend({
         });
 
         this.mesh = new THREE.Mesh(geometry, material);
-        this.collider = new SAT.Circle(new SAT.Vector(this.mesh.position.x,this.mesh.position.z),8);
+        this.collider = new SAT.Circle(new SAT.Vector(this.mesh.position.x-8,this.mesh.position.z-8),8);
 
     },
     velocity: 10,
-    collisionRemaining: 1,
+    collisionRemaining: 3,
+    collisionCooldown: 0,
     direction: new THREE.Vector3(0, 0, 0),
     setTarget: function (target) {
         var playerVector = new THREE.Vector3().copy(target.position);
@@ -40,35 +41,26 @@ var Bullet = Class.extend({
         var direction = new THREE.Vector3().copy(this.direction);
         direction.multiplyScalar(this.velocity);
 
-        var obstacles = basicScene.world.obstacles;
+        if(this.collisionCooldown <= 0 && this.collisionRemaining > 0) {
+            var obstacles = basicScene.world.obstacles;
 
-        for(var i=0; i < obstacles.length; i++){
-            var response = new SAT.Response();
-            var col = SAT.testPolygonCircle(obstacles[i].toPolygon(), this.collider,response);
+            for (var i = 0; i < obstacles.length; i++) {
+                var response = new SAT.Response();
+                var col = SAT.testPolygonCircle(obstacles[i].toPolygon(), this.collider, response);
 
-            if(col) {
-                this.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
-                this.direction.negate();
+                if (col) {
+                    this.direction.negate();
+                    this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
+                    this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
+                    this.collisionCooldown = 10;
+                    this.collisionRemaining -= 1;
+                }
             }
-            //console.log(col)
+        } else if(this.collisionRemaining == 0){
+            this.die();
+        } else {
+            this.collisionCooldown -=1
         }
-
-
-
-        if (position.x > 1000 || position.x < -1000)
-            if (this.collisionRemaining > 0) {
-                direction.x *= -1;
-                this.direction.x *= -1;
-                this.collisionRemaining -= 1;
-            } else
-                this.die();
-        if (position.z > 1000 || position.z < -1000)
-            if (this.collisionRemaining > 0) {
-                direction.z *= -1;
-                this.direction.z *= -1;
-                this.collisionRemaining -= 1;
-            } else
-                this.die();
 
 
         this.mesh.position.add(direction)

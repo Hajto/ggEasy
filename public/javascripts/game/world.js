@@ -6,6 +6,8 @@ var World = Class.extend({
         var mapWidth = map.width*64, mapHeight = map.width*64;
         this.offsetX = map.width/2*64;
         this.offsetZ = map.height/2*64;
+
+        console.log(this.offsetX)
         var background = new THREE.Mesh(new THREE.SphereGeometry(3000, 64, 64), new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             map: THREE.ImageUtils.loadTexture('assets/textures/background.png')
@@ -37,12 +39,12 @@ var World = Class.extend({
             this.mesh.add(this.walls[i]);
         }
         this.walls[0].rotation.y = -Math.PI / 2;
-        this.walls[0].position.x = ground.width / 2;
+        this.walls[0].position.x = this.offsetX;
         this.walls[1].rotation.y = Math.PI;
-        this.walls[1].position.z = ground.height / 2;
+        this.walls[1].position.z = this.offsetZ;
         this.walls[2].rotation.y = Math.PI / 2;
-        this.walls[2].position.x = -ground.width / 2;
-        this.walls[3].position.z = -ground.height / 2;
+        this.walls[2].position.x = -this.offsetX;
+        this.walls[3].position.z = -this.offsetZ;
 
         this.obstacles = [
             new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), mapWidth, 1),
@@ -54,12 +56,9 @@ var World = Class.extend({
         for(var i =0; i<map.map.length; i++){
             for(var j=0; j<map.map[i].length; j++){
                 if(map.map[i][j] == 0){
-                    var cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(64,64,64),new THREE.MeshBasicMaterial({
-                        wireframe:true,
-                        color: 0xff0000
-                    }));
-                    cubeMesh.translateX(i*64-this.offsetX);
-                    cubeMesh.translateZ(j*64-this.offsetZ);
+                    var cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(64,64,64), material);
+                    cubeMesh.translateX(i*64-this.offsetX+32);
+                    cubeMesh.translateZ(j*64-this.offsetZ+32);
                     cubeMesh.translateY(32);
                     this.mesh.add(cubeMesh);
 
