@@ -1,3 +1,4 @@
+var tileSize = 64;
 var World = Class.extend({
     // Class constructor
     init: function (args) {
@@ -76,6 +77,9 @@ var World = Class.extend({
                 }
             }
         }
+
+        for(var i = 0; i < map.mobSpawnPoints.length;i++)
+            this.spawnPoints.push(new THREE.Vector3(map.mobSpawnPoints[i].x * tileSize, 32, map.mobSpawnPoints[i].y*tileSize))
 
         this.bullets = [];
         this.playerTargetedBullets = [];

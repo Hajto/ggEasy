@@ -52,14 +52,14 @@ var Character = Class.extend({
         // Set the current animation step
         this.step = 0;
         this.position = this.mesh.position;
-        this.collider = new SAT.Box(new SAT.Vector(this.position.x-30,this.position.z-30),60,60)
+        this.collider = new SAT.Box(new SAT.Vector(this.position.x-36,this.position.z-36),60,60);
 
         var colliderPolygon = this.collider.toPolygon();
         console.log(colliderPolygon);
         for(var x = 0; x < colliderPolygon.points.length; x++){
-            var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material)
-            test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x
-            test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y
+            var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material);
+            test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x;
+            test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y;
             this.mesh.add(test)
         }
     },
