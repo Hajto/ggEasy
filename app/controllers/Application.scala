@@ -29,6 +29,15 @@ object Application extends Controller with MongoController {
 
   def maps = collection("maps")
 
+  def game(levelName: String) = Action.async {
+    selectMaps($("name" -> levelName)).map { elems =>
+      if (elems.nonEmpty)
+        Ok(views.html.game(Html(Json.toJson(elems.head).toString())))
+      else
+        Ok("No such level")
+    }
+  }
+
   def selectMaps(selector: JsValue) = {
     val cursor: Cursor[JsValue] = maps.find(selector).cursor[JsValue]
     val futureSlavesList: Future[List[JsValue]] = cursor.collect[List]()

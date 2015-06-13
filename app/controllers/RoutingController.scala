@@ -13,7 +13,4 @@ object RoutingController {
   def menu = Action.async {
     Future.successful(Ok(views.html.menu()))
   }
-  def game = Action.async {
-    Future.successful(Ok(views.html.game()))
-  }
 }
