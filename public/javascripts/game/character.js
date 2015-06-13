@@ -12,6 +12,8 @@ var Character = Class.extend({
         // Set the character modelisation object
         this.mesh = new THREE.Object3D();
         this.mesh.position.y = 48;
+        this.mesh.position.x = map.playerSpawnPoint.x;
+        this.mesh.position.z = map.playerSpawnPoint.y;
         // Set and add its head
         this.head = new THREE.Mesh(head, material);
         this.head.position.y = 0;
@@ -50,14 +52,14 @@ var Character = Class.extend({
         // Set the current animation step
         this.step = 0;
         this.position = this.mesh.position;
-        this.collider = new SAT.Box(new SAT.Vector(this.position.x-32,this.position.z-32),64,64)
+        this.collider = new SAT.Box(new SAT.Vector(this.position.x-30,this.position.z-30),60,60)
 
         var colliderPolygon = this.collider.toPolygon();
-        console.log(colliderPolygon)
+        console.log(colliderPolygon);
         for(var x = 0; x < colliderPolygon.points.length; x++){
             var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material)
-            test.position.x = colliderPolygon.pos.x + colliderPolygon.points[x].x
-            test.position.z = colliderPolygon.pos.y + colliderPolygon.points[x].y
+            test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x
+            test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y
             this.mesh.add(test)
         }
     },
@@ -139,8 +141,8 @@ var Character = Class.extend({
             this.die()
     },
     update: function(){
-        this.collider.pos.x = this.mesh.position.x;
-        this.collider.pos.y = this.mesh.position.z;
+        this.collider.pos.x = this.mesh.position.x - 32;
+        this.collider.pos.y = this.mesh.position.z - 32;
     },
     currentWeapon: new DefaultWeapon()
 });

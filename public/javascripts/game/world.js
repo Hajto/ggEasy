@@ -45,10 +45,10 @@ var World = Class.extend({
         this.walls[3].position.z = -ground.height / 2;
 
         this.obstacles = [
-            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), mapWidth, 32),
-            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), 32, mapHeight),
-            new SAT.Box(new SAT.Vector( -mapWidth/2,mapWidth/2), mapWidth, 32),
-            new SAT.Box(new SAT.Vector( mapWidth/2,-mapWidth/2), 32, mapHeight)
+            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), mapWidth, 1),
+            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), 1, mapHeight),
+            new SAT.Box(new SAT.Vector( -mapWidth/2,mapWidth/2), mapWidth, 1),
+            new SAT.Box(new SAT.Vector( mapWidth/2,-mapWidth/2), 1, mapHeight)
         ];
 
         for(var i =0; i<map.map.length; i++){
@@ -63,20 +63,21 @@ var World = Class.extend({
                     cubeMesh.translateY(32);
                     this.mesh.add(cubeMesh);
 
-                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x-32,cubeMesh.position.z-32),64,64)
+                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x-30,cubeMesh.position.z-30),60,60);
                     this.obstacles.push(collider);
                     var colliderPolygon = collider.toPolygon();
-                    console.log(colliderPolygon)
+                    console.log(colliderPolygon);
                     for(var x = 0; x < colliderPolygon.points.length; x++){
-                        var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material)
-                        test.position.x = colliderPolygon.pos.x + colliderPolygon.points[x].x
-                        test.position.z = colliderPolygon.pos.y + colliderPolygon.points[x].y
+                        var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material);
+                        test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x;
+                        test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y;
                         this.mesh.add(test)
                     }
 
                 }
             }
         }
+
     },
     playerCollide: function(){
         for(var a = 0; a < this.obstacles.length; a++){
@@ -88,7 +89,8 @@ var World = Class.extend({
                 var player = basicScene.user;
                 player.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
                 player.direction = new THREE.Vector3(0,0,0);
-                basicScene.stopMove()
+                basicScene.stopMove();
+                player.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
             }
         }
     },
