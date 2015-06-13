@@ -63,7 +63,7 @@ var World = Class.extend({
                     cubeMesh.translateY(32);
                     this.mesh.add(cubeMesh);
 
-                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x-30,cubeMesh.position.z-30),60,60);
+                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x-32,cubeMesh.position.z-32),64,64);
                     this.obstacles.push(collider);
                     var colliderPolygon = collider.toPolygon();
                     console.log(colliderPolygon);
@@ -87,9 +87,6 @@ var World = Class.extend({
 
             if(col){
                 var player = basicScene.user;
-                player.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
-                player.direction = new THREE.Vector3(0,0,0);
-                basicScene.stopMove();
                 player.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
             }
         }
