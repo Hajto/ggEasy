@@ -30,20 +30,28 @@ object Application extends Controller with MongoController {
   def maps = collection("maps")
 
   def index = Action.async {
-    val cursor: Cursor[JsObject] = collection("default").find($("name" -> "tem")).cursor[JsObject]
-    val futureSlavesList: Future[List[JsObject]] = cursor.collect[List]()
-    futureSlavesList.map { pins =>
-      if (pins.nonEmpty)
-        Ok(views.html.editor("default", Html(Json.toJson(pins.head).toString())))
+    Future.successful(Ok("OK"))
+  }
+
+  def selectMaps(selector: JsValue) = {
+    val cursor: Cursor[JsValue] = maps.find(selector).cursor[JsValue]
+    val futureSlavesList: Future[List[JsValue]] = cursor.collect[List]()
+    futureSlavesList
+  }
+
+  def edit(map: String) = Action.async {
+    selectMaps($("name" -> map)).map { elems =>
+      if (elems.nonEmpty)
+        Ok(views.html.editor(map, Html(Json.toJson(elems.head).toString())))
       else
-        Ok(views.html.editor("default", Html("{}")))
+        Ok(views.html.editor(map, Html("{}")))
     }
   }
 
   def upsertMap = Action.async(parse.json) { implicit req =>
     req.body.validate[Level] match {
       case JsSuccess(level, _) => {
-        collection("default").update($("name" -> level.name),
+        maps.update($("name" -> level.name),
           $("$set" -> Json.toJson(level), "$setOnInsert" -> $("rating" -> Json.toJson(List[Int]()))),
           upsert = true).map { last =>
           if (last.ok)
@@ -52,10 +60,28 @@ object Application extends Controller with MongoController {
             BadRequest("DBError")
         }
       }
-      case err@JsError(_) => Future.successful(BadRequest(err.toString()))
+      case err@JsError(_) => Future.successful(BadRequest(err.toString))
     }
   }
 
-  //def selectAll(mapName: String) =
+  def selectAll = Action.async {
+    selectMaps($()).map { elem =>
+      elem.map { jsValue =>
+        jsValue.validate[Level].get
+      }: List[Level]
+    }.collect {
+      case (list: List[Level]) => Ok(list.toString)
+    }
+  }
+
+  def showAll = Action.async {
+    selectMaps($()).map { elem =>
+      elem.map { jsValue =>
+        jsValue.validate[Level].get
+      }: List[Level]
+    }.collect {
+      case (list: List[Level]) => Ok(views.html.levelChooser(list))
+    }
+  }
 
 }

@@ -3,7 +3,12 @@
 # ~~~~
 
 # Home page
-GET         /                        controllers.Application.index
-POST        /upsert                  controllers.Application.upsertMap
+GET         /                    controllers.Application.index
 
-GET         /assets/*file            controllers.Assets.at(path="/public", file)
+GET         /select/list         controllers.Application.selectAll
+GET         /select              controllers.Application.showAll
+
+GET         /edit/:name          controllers.Application.edit(name: String)
+POST        /edit/upsert         controllers.Application.upsertMap
+
+GET         /assets/*file        controllers.Assets.at(path="/public", file)

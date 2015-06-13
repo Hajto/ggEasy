@@ -10,6 +10,7 @@ var empty = {
     className: "wall"
 }, playerSpawn = {
     effect: function(i,j){
+        document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "empty";
         playerSpawnPoint.x = parseInt(i);
         playerSpawnPoint.y = parseInt(j);
     },
@@ -42,7 +43,8 @@ function init(){
     holder.appendChild(table);
     document.getElementById("64Warning").style.display = "none";
 
-    document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "playerSpawn";
+
+    if(width != undefined && width > 0 && height > 0) document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "playerSpawn";
     for(var i = 0; i < mobSpawnPoints.length; i++){
         var spawn = mobSpawnPoints[i];
         document.getElementById(spawn.x+ " " + spawn.y).className = "mobSpawn"
@@ -57,6 +59,7 @@ function init(){
             holder.innerHTML = "";
             holder.appendChild(table);
             document.getElementById("64Warning").style.display = "none";
+            document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "playerSpawn"
         } else {
             document.getElementById("64Warning").style.display = "block";
         }
@@ -69,6 +72,12 @@ function init(){
     },false);
     document.getElementById("playerSpawnPointPlacer").addEventListener("click", function () {
         nextPlace = playerSpawn;
+    },false);
+    document.getElementById("sendButton").addEventListener("click", function () {
+        if(document.getElementById("mapName").value.length > 0 && mobSpawnPoints.length > 0)
+        uploadMap();
+        else
+            alert("Informacja nie jest kompletna")
     },false);
 
     function generateEditTable(width, height){
