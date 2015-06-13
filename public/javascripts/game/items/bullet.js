@@ -49,9 +49,10 @@ var Bullet = Class.extend({
                 var col = SAT.testPolygonCircle(obstacles[i].toPolygon(), this.collider, response);
 
                 if (col) {
-                    this.direction.negate();
+                    if(response.overlapV.x != 0) this.direction.x *= -1;
+                    else this.direction.z *= -1;
                     this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
-                    this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
+                    console.log(response.overlapV)
                     this.collisionCooldown = 10;
                     this.collisionRemaining -= 1;
                 }
