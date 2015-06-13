@@ -78,6 +78,9 @@ var World = Class.extend({
             }
         }
 
+        this.bullets = [];
+        this.playerTargetedBullets = [];
+
     },
     playerCollide: function(){
         for(var a = 0; a < this.obstacles.length; a++){
@@ -91,6 +94,10 @@ var World = Class.extend({
             }
         }
     },
+    fluBullets : function(){
+        for(var i = 0; i < this.bullets.length; i++)
+            this.bullets[i].fly()
+    },
     spawnPoints: [
         
     ],
@@ -99,6 +106,7 @@ var World = Class.extend({
     enemyKinds: [Rusher, Speeder],
     update: function(){
         this.playerCollide();
+        this.fluBullets();
         basicScene.user.update();
     },
     spawn: function () {
