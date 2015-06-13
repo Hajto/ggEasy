@@ -3,9 +3,11 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.Application.index
+GET         /                    controllers.RoutingController.index
 
-GET         /menu                controllers.Application.menu
+GET         /menu                controllers.RoutingController.menu
+
+GET         /game                controllers.RoutingController.game
 
 GET         /select/list         controllers.Application.selectAll
 GET         /select              controllers.Application.showAll

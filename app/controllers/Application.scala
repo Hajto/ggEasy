@@ -29,13 +29,6 @@ object Application extends Controller with MongoController {
 
   def maps = collection("maps")
 
-  def index = Action.async {
-    Future.successful(Ok(views.html.index()))
-  }
-  def menu = Action.async {
-    Future.successful(Ok(views.html.menu()))
-  }
-
   def selectMaps(selector: JsValue) = {
     val cursor: Cursor[JsValue] = maps.find(selector).cursor[JsValue]
     val futureSlavesList: Future[List[JsValue]] = cursor.collect[List]()

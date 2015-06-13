@@ -1,0 +1,35 @@
+@()
+
+@boiler(){
+    <script src="@routes.Assets.at("libs/javascript/modernizr.js")"></script>
+    <script src="@routes.Assets.at("javascripts/game/loader/script.js")"></script>
+}{
+    <div id="ded">
+        <div class="absoluteCenter">
+            <div id="restart"> Padłeś, grasz jeszcze raz? </div>
+        </div>
+    </div>
+    <div id="menu">
+        <div class="absoluteCenter">
+            <div id="play"> Graj! </div>
+        </div>
+    </div>
+    <div id="weapon">
+
+    </div>
+    <div id="stats">
+        <div id="points">Points: 0</div>
+        <div id="kills">Kills: 0</div>
+        <div id="wave">Wave: 1</div>
+        <div id="clock"></div>
+        <div id="position"></div>
+    </div>
+    <div id="hp">
+        <div id="hpProgressBar">
+            100/100
+        </div>
+    </div>
+    <div id="basic-scene" class="game-container" >
+
+    </div>
+}
