@@ -50,7 +50,16 @@ var Character = Class.extend({
         // Set the current animation step
         this.step = 0;
         this.position = this.mesh.position;
-        this.collider = new SAT.Box(new SAT.Vector(this.position.x,this.position.z),32,32)
+        this.collider = new SAT.Box(new SAT.Vector(this.position.x-32,this.position.z-32),64,64)
+
+        var colliderPolygon = this.collider.toPolygon();
+        console.log(colliderPolygon)
+        for(var x = 0; x < colliderPolygon.points.length; x++){
+            var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material)
+            test.position.x = colliderPolygon.pos.x + colliderPolygon.points[x].x
+            test.position.z = colliderPolygon.pos.y + colliderPolygon.points[x].y
+            this.mesh.add(test)
+        }
     },
     maxHealth: 100,
     health: 100,

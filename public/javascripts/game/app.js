@@ -20,7 +20,7 @@ var BasicScene = Class.extend({
         });
 
         this.scene.add(this.user.mesh);
-        // Create the "world" : a 3D representation of the place we'll be putting our character in
+
         this.world = new World({
             color: 0xF5F5F5
         });
@@ -160,7 +160,7 @@ var BasicScene = Class.extend({
             }, true);
         }
     },
-    stop: function(){
+    stopMove: function(){
         this.refControls.up = false;
         this.refControls.down = false;
         this.refControls.left = false;

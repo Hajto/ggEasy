@@ -3,7 +3,9 @@ var World = Class.extend({
     init: function (args) {
         'use strict';
         // Set the different geometries composing the room
-        var mapWidth = 2048, mapHeight = 2048;
+        var mapWidth = map.width*64, mapHeight = map.width*64;
+        this.offsetX = map.width/2*64;
+        this.offsetZ = map.height/2*64;
         var background = new THREE.Mesh(new THREE.SphereGeometry(3000, 64, 64), new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             map: THREE.ImageUtils.loadTexture('assets/textures/background.png')
@@ -47,7 +49,34 @@ var World = Class.extend({
             new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), 32, mapHeight),
             new SAT.Box(new SAT.Vector( -mapWidth/2,mapWidth/2), mapWidth, 32),
             new SAT.Box(new SAT.Vector( mapWidth/2,-mapWidth/2), 32, mapHeight)
-        ]
+        ];
+
+        for(var i =0; i<map.map.length; i++){
+            for(var j=0; j<map.map[i].length; j++){
+                if(map.map[i][j] == 0){
+                    var cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(64,64,64),new THREE.MeshBasicMaterial({
+                        wireframe:true,
+                        color: 0xff0000
+                    }));
+                    cubeMesh.translateX(i*64-this.offsetX);
+                    cubeMesh.translateZ(j*64-this.offsetZ);
+                    cubeMesh.translateY(32);
+                    this.mesh.add(cubeMesh);
+
+                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x-32,cubeMesh.position.z-32),64,64)
+                    this.obstacles.push(collider);
+                    var colliderPolygon = collider.toPolygon();
+                    console.log(colliderPolygon)
+                    for(var x = 0; x < colliderPolygon.points.length; x++){
+                        var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material)
+                        test.position.x = colliderPolygon.pos.x + colliderPolygon.points[x].x
+                        test.position.z = colliderPolygon.pos.y + colliderPolygon.points[x].y
+                        this.mesh.add(test)
+                    }
+
+                }
+            }
+        }
     },
     playerCollide: function(){
         for(var a = 0; a < this.obstacles.length; a++){
@@ -58,18 +87,13 @@ var World = Class.extend({
             if(col){
                 var player = basicScene.user;
                 player.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
-                player.direction = new THREE.Vector3(0,0,0)
-
+                player.direction = new THREE.Vector3(0,0,0);
+                basicScene.stopMove()
             }
         }
     },
     spawnPoints: [
-        new THREE.Vector3(-512, 32, -512),
-        new THREE.Vector3(560, 32, 480),
-        new THREE.Vector3(+512, 32, 257),
-        new THREE.Vector3(457, 32, -852),
-        new THREE.Vector3(322, 32, 789),
-        new THREE.Vector3(+512, 32, -512)
+        
     ],
     spawnDelay: 240,
     currentWave: 0,
@@ -113,18 +137,484 @@ function getRandomFrom(n) {
     return Math.round(Math.random() * n);
 }
 
-function collisionResponse(response, obj1, obj2){
-    if (obj2.isHeavy) {
-        response.overlapV.scale(1.001);
-        obj1.position.add(response.overlapV);
-        alert("to")
-    } else if (obj1.isHeavy) {
-        obj2.position.sub(response.overlapV);
-        alert("tamto")
-    } else {
-        //obj2.position.sub(response.overlapV);
-        var transition = new THREE.Vector3(response.overlapV.x,0,response.overlapV.y);
-        obj1.position.add(transition);
-        obj1.move();
+var map = {
+"_id": {
+    "$oid": "557bf35e0db630d7038a3828"
+},
+"name": "level1",
+    "width": 20,
+    "height": 20,
+    "map": [
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ]
+],
+    "playerSpawnPoint": {
+    "x": 2,
+        "y": 3
+},
+"mobSpawnPoints": [
+    {
+        "x": 3,
+        "y": 8
+    },
+    {
+        "x": 6,
+        "y": 6
+    },
+    {
+        "x": 7,
+        "y": 9
+    },
+    {
+        "x": 6,
+        "y": 10
+    },
+    {
+        "x": 19,
+        "y": 9
+    },
+    {
+        "x": 19,
+        "y": 17
     }
+],
+    "rating": []
 }
