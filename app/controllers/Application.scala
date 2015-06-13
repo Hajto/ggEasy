@@ -30,7 +30,10 @@ object Application extends Controller with MongoController {
   def maps = collection("maps")
 
   def index = Action.async {
-    Future.successful(Ok("OK"))
+    Future.successful(Ok(views.html.index()))
+  }
+  def menu = Action.async {
+    Future.successful(Ok(views.html.menu()))
   }
 
   def selectMaps(selector: JsValue) = {

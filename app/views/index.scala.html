@@ -1,0 +1,22 @@
+@()
+
+@boiler() {
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/index/main.css")" />
+    <script>
+        function init(){
+            setTimeout(function(){
+                document.location.href = "menu"
+            },17000)
+        }
+    </script>
+} {
+    <body onload="init()">
+        <div id="intro">
+            <video autoplay>
+                <source src="@routes.Assets.at("video/ggEasy.mp4")" type="video/mp4">
+            </video>
+        </div>
+    </body>
+
+
+}

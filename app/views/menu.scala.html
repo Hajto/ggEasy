@@ -1,0 +1,21 @@
+@()
+
+@boiler() {
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/index/main.css")" />
+    <script>
+        function init(){
+
+        }
+    </script>
+} {
+    <body onload="init()">
+        <div id="menu">
+            <div class="absoluteCenter">
+                <div id="play"> Graj! </div>
+                <div id="selectLevel" onclick="document.location.href='select'"> Wybierz poziom </div>
+            </div>
+        </div>
+    </body>
+
+
+}

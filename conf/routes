@@ -5,6 +5,8 @@
 # Home page
 GET         /                    controllers.Application.index
 
+GET         /menu                controllers.Application.menu
+
 GET         /select/list         controllers.Application.selectAll
 GET         /select              controllers.Application.showAll
 
