@@ -7,7 +7,8 @@ GET         /                    controllers.RoutingController.index
 
 GET         /menu                controllers.RoutingController.menu
 
-GET         /game/random/:seed   controllers.Application.gameFromSeed(seed: Int)
+GET         /game/random         controllers.Application.gameFromRandomSeed
+GET         /game/random/:seed   controllers.Application.gameFromSeed(seed: Long)
 GET         /game/usermade/:level         controllers.Application.game(level: String)
 
 GET         /select/list         controllers.Application.selectAll
