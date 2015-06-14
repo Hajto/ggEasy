@@ -6,6 +6,8 @@ var Speeder = Class.extend({
         });
         var geometry = new THREE.TorusGeometry( 20, 6, 16, 100 );
         this.mesh = new THREE.Mesh(geometry, material);
+
+        this.collider = new SAT.Box(new SAT.Vector(this.mesh.position.x - 20,this.mesh.position.z - 10),40,40)
     },
     health: 10,
     velocity: 4*speedMultiplier,
@@ -19,25 +21,40 @@ var Speeder = Class.extend({
         this.mesh.position.set(x, 100, z);
     },
     follow: function () {
+        this.collider.pos.x = this.mesh.position.x - 20;
+        this.collider.pos.y = this.mesh.position.z - 20;
+
         this.mesh.rotation.y += 0.05;
 
         var playerVector = new THREE.Vector3();
         playerVector.x = basicScene.user.mesh.position.x;
         playerVector.z = basicScene.user.mesh.position.z;
+
         var enemyVector = new THREE.Vector3().copy(this.mesh.position);
+
+        this.direction = playerVector.sub(enemyVector).normalize();
+        this.direction.y = 0;
+
 
         if(this.timeout > 0){
             this.timeout -= 1;
-        } else if (parseInt(distance(enemyVector, playerVector)) < 48) {
-
-            basicScene.user.applyDamage(this);
+        } /*else if (parseInt(distance(enemyVector, playerVector)) < 48) {
+            //basicScene.user.applyDamage(this);
             this.direction = new THREE.Vector3(0, 0, 0);
+        }*/ else {
+            var obstacles = basicScene.world.obstacles;
 
-        }
-        else {
-            this.direction = playerVector.sub(enemyVector).normalize();
-            this.direction.y = 0;
+            for (var i = 0; i < obstacles.length; i++) {
+                var response = new SAT.Response();
+                var col = SAT.testPolygonPolygon(obstacles[i].toPolygon(), this.collider.toPolygon(), response);
+
+                if (col) {
+                    this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
+                    this.direction.negate();
+                }
+            }
             this.mesh.position.add(this.direction.multiplyScalar(this.velocity));
+
         }
 
         function distance(v1, v2) {

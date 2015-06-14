@@ -92,16 +92,16 @@ var BasicScene = Class.extend({
             // Update the state of the attached control to "true"
             switch (e.keyCode) {
                 case 65:
-                    controls.left = true;
-                    break;
-                case 87:
-                    controls.up = true;
-                    break;
-                case 68:
                     controls.right = true;
                     break;
-                case 83:
+                case 87:
                     controls.down = true;
+                    break;
+                case 68:
+                    controls.left = true;
+                    break;
+                case 83:
+                    controls.up = true;
                     break;
                 case 27:
                     if (basicScene.user.health > 0)
@@ -125,16 +125,16 @@ var BasicScene = Class.extend({
             // Update the state of the attached control to "false"
             switch (e.keyCode) {
                 case 65:
-                    controls.left = false;
-                    break;
-                case 87:
-                    controls.up = false;
-                    break;
-                case 68:
                     controls.right = false;
                     break;
-                case 83:
+                case 87:
                     controls.down = false;
+                    break;
+                case 68:
+                    controls.left = false;
+                    break;
+                case 83:
+                    controls.up = false;
                     break;
                 default:
                     prevent = false;
@@ -181,7 +181,7 @@ var BasicScene = Class.extend({
     setFocus: function (object) {
         'use strict';
         this.light.lookAt(object.position);
-        this.camera.position.set(object.position.x, object.position.y + 512, object.position.z - 400);
+        this.camera.position.set(object.position.x, object.position.y + 512, object.position.z + 400);
         this.camera.lookAt(object.position);
     },
     // Update and draw the scene

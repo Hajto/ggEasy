@@ -52,8 +52,8 @@ var Bullet = Class.extend({
                     if(response.overlapV.x != 0) this.direction.x *= -1;
                     else this.direction.z *= -1;
                     this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
-                    console.log(response.overlapV)
-                    this.collisionCooldown = 10;
+                    console.log(response.overlapV);
+                    this.collisionCooldown = 5;
                     this.collisionRemaining -= 1;
                 }
             }

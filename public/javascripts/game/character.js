@@ -62,6 +62,10 @@ var Character = Class.extend({
             test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y;
             this.mesh.add(test)
         }
+
+        this.mesh.position.x = map.playerSpawnPoint.x*64-map.width/2*64+32;
+        this.mesh.position.z = map.playerSpawnPoint.y*64-map.height/2*64+32;
+
     },
     maxHealth: 100,
     health: 100,
@@ -128,6 +132,7 @@ var Character = Class.extend({
         this.feet.right.position.setZ(Math.cos(this.step + (Math.PI / 2)) * 16);
         this.hands.left.position.setZ(Math.cos(this.step + (Math.PI / 2)) * 8);
         this.hands.right.position.setZ(Math.sin(this.step) * 8);
+
     },
     die: function(){
         basicScene.running = false;

@@ -1,4 +1,13 @@
 var tileSize = 64;
+
+function mapXToPosX(x){
+    return x*64-(map.width/2*64)+32;
+}
+function mapYToPosZ(y){
+    return y*64-(map.height/2*64)+32;
+}
+
+
 var World = Class.extend({
     // Class constructor
     init: function (args) {
@@ -8,7 +17,6 @@ var World = Class.extend({
         this.offsetX = map.width/2*64;
         this.offsetZ = map.height/2*64;
 
-        console.log(this.offsetX)
         var background = new THREE.Mesh(new THREE.SphereGeometry(3000, 64, 64), new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             map: THREE.ImageUtils.loadTexture('assets/textures/background.png')
@@ -55,7 +63,7 @@ var World = Class.extend({
         ];
 
         for(var i =0; i<map.map.length; i++){
-            for(var j=0; j<map.map[i].length; j++){
+            for(var j=0; j< map.map[i].length; j++){
                 if(map.map[i][j] == 0){
                     var cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(64,64,64), material);
                     cubeMesh.translateX(i*64-this.offsetX+32);
@@ -83,6 +91,7 @@ var World = Class.extend({
 
         this.bullets = [];
         this.playerTargetedBullets = [];
+        this.enemies = [];
 
     },
     playerCollide: function(){
@@ -110,6 +119,7 @@ var World = Class.extend({
     update: function(){
         this.playerCollide();
         this.fluBullets();
+        this.updateEnemies();
         basicScene.user.update();
     },
     spawn: function () {
@@ -140,6 +150,10 @@ var World = Class.extend({
         var chosenSpawnPoint = this.spawnPoints[getRandomFrom(this.spawnPoints.length - 1)];
         enemy.velocity = enemy.initialVelocity * speedMultiplier;
         enemy.spawnAt(chosenSpawnPoint.x, chosenSpawnPoint.y, chosenSpawnPoint.z);
+    },
+    updateEnemies: function () {
+        for(var i=0; i<this.enemies.length; i++)
+            this.enemies[i].follow();
     }
 });
 

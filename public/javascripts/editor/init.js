@@ -1,25 +1,25 @@
 var empty = {
     effect: function(i,j){
-        map[i][j] = 1
+        map[j][i] = 1
     },
     className: "empty"
 }, wall = {
     effect: function(i,j){
-        map[i][j] = 0
+        map[j][i] = 0
     },
     className: "wall"
 }, playerSpawn = {
     effect: function(i,j){
-        document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "empty";
-        playerSpawnPoint.x = parseInt(i);
-        playerSpawnPoint.y = parseInt(j);
+        document.getElementById(playerSpawnPoint.y + " " + playerSpawnPoint.x).className = "empty";
+        playerSpawnPoint.x = parseInt(j);
+        playerSpawnPoint.y = parseInt(i);
     },
     className: "playerSpawn"
 }, mobSpawn = {
     effect: function(i,j){
-        var indexOrNot = mobSpawnIsDefined(i,j);
+        var indexOrNot = mobSpawnIsDefined(j,i);
         if( indexOrNot == -1)
-            mobSpawnPoints.push({x:parseInt(i),y:parseInt(j)});
+            mobSpawnPoints.push({x:parseInt(j),y:parseInt(j)});
         else
             mobSpawnPoints.splice(indexOrNot,1);
     },
