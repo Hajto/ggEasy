@@ -24,6 +24,7 @@ var PathFinder = Class.extend({
             console.log(this.getGridFromVector(source))
             console.log(destination)
             console.log(this.getGridFromVector(destination))
+            this.graph = new Graph(map.map)
         }
         return path
     },
