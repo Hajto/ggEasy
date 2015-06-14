@@ -13,7 +13,7 @@ var World = Class.extend({
     init: function (args) {
         'use strict';
         // Set the different geometries composing the room
-        var mapWidth = map.width*64, mapHeight = map.width*64;
+        var mapWidth = map.width*64, mapHeight = map.height*64;
         this.offsetX = map.width/2*64;
         this.offsetZ = map.height/2*64;
 
@@ -56,10 +56,10 @@ var World = Class.extend({
         this.walls[3].position.z = -this.offsetZ;
 
         this.obstacles = [
-            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), mapWidth, 1),
-            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapWidth/2), 1, mapHeight),
-            new SAT.Box(new SAT.Vector( -mapWidth/2,mapWidth/2), mapWidth, 1),
-            new SAT.Box(new SAT.Vector( mapWidth/2,-mapWidth/2), 1, mapHeight)
+            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapHeight/2), mapWidth, 1),
+            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapHeight/2), 1, mapHeight),
+            new SAT.Box(new SAT.Vector( -mapWidth/2,mapHeight/2), mapWidth, 1),
+            new SAT.Box(new SAT.Vector( mapWidth/2,-mapHeight/2), 1, mapHeight)
         ];
 
         for(var i =0; i<map.map.length; i++){

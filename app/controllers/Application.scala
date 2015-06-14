@@ -121,6 +121,6 @@ object Application extends Controller with MongoController {
 
     val level = new Level("generated",width,height,list,new Point(0,0),generateSpawnPoints(3),None)
 
-    Future.successful(Ok(views.html.editor("generated",Html(Json.toJson(level).toString()))))
+    Future.successful(Ok(views.html.game(Html(Json.toJson(level).toString()))))
   }
 }
