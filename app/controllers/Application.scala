@@ -19,6 +19,8 @@ import scala.io.Source
 import model.Level.format
 import model.Point.format
 
+import scala.util.Random
+
 object Application extends Controller with MongoController {
 
   def $(a: (String, JsValueWrapper)*) = Json.obj(a: _*)
@@ -89,4 +91,9 @@ object Application extends Controller with MongoController {
     }
   }
 
+  def gameFromSeed(seed: Int) = Action.async {
+    val gen = new Random(seed)
+
+    Future.successful(Ok(gen.nextBoolean() + " " + gen.nextBoolean() + gen.nextBoolean() +gen.nextBoolean()))
+  }
 }

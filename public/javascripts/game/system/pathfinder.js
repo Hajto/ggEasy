@@ -18,12 +18,8 @@ var PathFinder = Class.extend({
         return this.graph.grid[graphPos.x][graphPos.y]
     },
     findShortestPath: function(source, destination){
-        var path = astar.search(this.graph,this.getGridFromVector(source),this.getGridFromVector(destination))
+        var path = astar.search(this.graph,this.getGridFromVector(source),this.getGridFromVector(destination),true);
         if(path.length == 0){
-            console.log(source)
-            console.log(this.getGridFromVector(source))
-            console.log(destination)
-            console.log(this.getGridFromVector(destination))
             this.graph = new Graph(map.map)
         }
         return path
