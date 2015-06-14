@@ -93,6 +93,7 @@ var World = Class.extend({
         this.playerTargetedBullets = [];
         this.enemies = [];
 
+
     },
     playerCollide: function(){
         for(var a = 0; a < this.obstacles.length; a++){

@@ -33,6 +33,7 @@ var BasicScene = Class.extend({
         this.setFocus(this.user.mesh);
         // Start the events handlers
         this.setControls();
+
     },
     stats: {
         setHealth: function () {
@@ -200,5 +201,9 @@ var BasicScene = Class.extend({
             this.renderer.render(this.scene, this.camera);
         }
 
+    },
+    onReady: function(){
+        var test = new Speeder();
+        test.spawnAt(0,0,0)
     }
 });

@@ -32,6 +32,7 @@
         complete: function () {
 
             basicScene = new BasicScene();
+            basicScene.onReady();
             function animate() {
                 requestAnimationFrame(animate);
                 basicScene.frame();

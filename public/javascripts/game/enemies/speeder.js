@@ -4,17 +4,19 @@ var Speeder = Class.extend({
             side: THREE.DoubleSide,
             map: THREE.ImageUtils.loadTexture('assets/textures/evilBox.png')
         });
-        var geometry = new THREE.TorusGeometry( 20, 6, 16, 100 );
+        var geometry = new THREE.TorusGeometry(20, 6, 16, 100);
         this.mesh = new THREE.Mesh(geometry, material);
 
-        this.collider = new SAT.Box(new SAT.Vector(this.mesh.position.x - 20,this.mesh.position.z - 10),40,40)
+        this.collider = new SAT.Box(new SAT.Vector(this.mesh.position.x - 20, this.mesh.position.z - 10), 40, 40)
     },
     health: 10,
-    velocity: 4*speedMultiplier,
+    velocity: 4 * speedMultiplier,
     initialVelocity: 5,
     damage: 25,
     timeout: 60,
-    size : 20,
+    size: 20,
+    pathFindingCooldown: 120,
+    destination: new THREE.Vector3(),
     spawnAt: function (x, y, z) {
         basicScene.world.mesh.add(this.mesh);
         basicScene.world.enemies.push(this);
@@ -26,9 +28,29 @@ var Speeder = Class.extend({
 
         this.mesh.rotation.y += 0.05;
 
-        var playerVector = new THREE.Vector3();
-        playerVector.x = basicScene.user.mesh.position.x;
-        playerVector.z = basicScene.user.mesh.position.z;
+        if (this.pathFindingCooldown <= 0) {
+            this.path = pathFinder.findShortestPath(this.mesh.position, basicScene.user.mesh.position);
+
+            if(this.path.length > 0)
+            this.pathFindingCooldown = 15;
+        } else
+            this.pathFindingCooldown -= 1;
+
+        if (this.path != undefined && this.path.length > 0) {
+
+            this.destination = new THREE.Vector3();
+            this.destination.x = mapXToPosX(this.path[0].x);
+            this.destination.z = mapYToPosZ(this.path[0].y);
+
+            if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
+                && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
+                this.path.splice(0, 1);
+                console.log("skracam")
+            }
+        }
+
+
+        var playerVector = new THREE.Vector3().copy(this.destination);
 
         var enemyVector = new THREE.Vector3().copy(this.mesh.position);
 
@@ -36,12 +58,9 @@ var Speeder = Class.extend({
         this.direction.y = 0;
 
 
-        if(this.timeout > 0){
+        if (this.timeout > 0) {
             this.timeout -= 1;
-        } /*else if (parseInt(distance(enemyVector, playerVector)) < 48) {
-            //basicScene.user.applyDamage(this);
-            this.direction = new THREE.Vector3(0, 0, 0);
-        }*/ else {
+        } else {
             var obstacles = basicScene.world.obstacles;
 
             for (var i = 0; i < obstacles.length; i++) {
@@ -50,12 +69,12 @@ var Speeder = Class.extend({
 
                 if (col) {
                     this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
-                    this.direction.negate();
                 }
             }
-            this.mesh.position.add(this.direction.multiplyScalar(this.velocity));
+
 
         }
+        this.mesh.position.add(this.direction.multiplyScalar(this.velocity));
 
         function distance(v1, v2) {
             var dx = parseInt(v1.x) - parseInt(v2.x);
@@ -66,7 +85,7 @@ var Speeder = Class.extend({
     },
     applyDamage: function (damage) {
         this.health -= damage;
-        if (this.health <= 0){
+        if (this.health <= 0) {
             this.die();
         }
 
