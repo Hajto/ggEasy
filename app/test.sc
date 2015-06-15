@@ -1,8 +1,11 @@
-import model.Level
-import play.api.libs.json.{JsString, Json}
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Paths, Files}
 
-val testString = """{"map":[[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,1,1,1,1],[1,1,1,0,0,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1]],"width":10,"height":10,"playerSpawnPoint":{"x":3,"y":7},"mobSpawnPoints":[{"x":1,"y":2}],"name":"temp","rating":[]}"""
+import scala.io._
+import scala.reflect.io.File
 
-val value = Json.parse(testString)
+val html = Source.fromURL("https://github.com/Hajtosek/actorWebSocketRequestKicker.git")
+val s = html.mkString
+println(s)
 
-val parsed = Json.fromJson[Level](value)
+File("filename").writeAll("hello world")

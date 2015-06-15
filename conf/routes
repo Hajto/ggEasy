@@ -3,18 +3,21 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.RoutingController.index
+GET         /                                                  controllers.RoutingController.index
 
-GET         /menu                controllers.RoutingController.menu
+GET         /menu                                              controllers.RoutingController.menu
 
-GET         /game/random         controllers.Application.gameFromRandomSeed
-GET         /game/random/:seed   controllers.Application.gameFromSeed(seed: Long)
-GET         /game/usermade/:level         controllers.Application.game(level: String)
+GET         /game/random                                       controllers.LevelGen.gameFromRandomSeed
+GET         /game/random/:seed                                 controllers.LevelGen.gameFromSeed(seed: Long)
+GET         /game/random/:seed/:width                          controllers.LevelGen.gameFromWidthSameAsHeight(width :Int, seed: Long)
+GET         /game/random/:seed/:width/:height                  controllers.LevelGen.gameFromWidthHeight(width : Int, height: Int, seed:Long)
+GET         /game/random/:seed/:width/:height/:mobSpawn        controllers.LevelGen.gameFromWidthHeightMobsSpawnCountAndSeed(width : Int, height: Int, mobSpawn: Int, seed:Long)
+GET         /game/usermade/:level                              controllers.Application.game(level: String)
 
-GET         /select/list         controllers.Application.selectAll
-GET         /select              controllers.Application.showAll
+GET         /select/list                                       controllers.Application.selectAll
+GET         /select                                            controllers.Application.showAll
 
-GET         /edit/:name          controllers.Application.edit(name: String)
-POST        /edit/upsert         controllers.Application.upsertMap
+GET         /edit/:name                                        controllers.Application.edit(name: String)
+POST        /edit/upsert                                       controllers.Application.upsertMap
 
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                      controllers.Assets.at(path="/public", file)

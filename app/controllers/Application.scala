@@ -91,36 +91,4 @@ object Application extends Controller with MongoController {
       case (list: List[Level]) => Ok(views.html.levelChooser(list))
     }
   }
-
-  def gameFromRandomSeed = Action.async {
-    Future.successful(Redirect(routes.Application.gameFromSeed(System.currentTimeMillis / 1000)))
-  }
-
-  def gameFromSeed(seed: Long) = Action.async {
-    val gen = new Random(seed)
-
-    val height = gen.nextInt(50) + 25
-    val width = gen.nextInt(50) + 25
-
-    val list = List.fill(width)(List.fill(height)(if (gen.nextInt(0 to 100 length) > 90) 0 else 1))
-
-    def generateSpawnPoints(count: Int) = {
-      def loop(count: Int, acc: List[Point]): List[Point] = {
-        if (count > 0) {
-          val x = gen.nextInt(height)
-          val y = gen.nextInt(width)
-
-          if (list(y)(x) == 1) loop(count - 1, Point(y, x) :: acc)
-          else loop(count, acc)
-        } else
-          acc
-      }
-
-      loop(count, List())
-    }
-
-    val level = new Level("generated",width,height,list,new Point(0,0),generateSpawnPoints(3),None)
-
-    Future.successful(Ok(views.html.game(Html(Json.toJson(level).toString()))))
-  }
 }
