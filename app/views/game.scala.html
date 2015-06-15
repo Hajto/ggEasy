@@ -5,51 +5,65 @@
     <script src="@routes.Assets.at("javascripts/game/loader/script.js")"></script>
     <script>
         var map = JSON.parse('@mapJSON');
-        Modernizr.load([
-    '@routes.Assets.at("libs/javascript/three.min.js")',
-    '@routes.Assets.at("libs/javascript/SAT.js")',
-    '@routes.Assets.at("libs/javascript/astar.js")',
-    {
-        load: [
-            '@routes.Assets.at("javascripts/game/utils.js")',
-            '@routes.Assets.at("javascripts/game/app.js")',
-            '@routes.Assets.at("javascripts/game/items/bullet.js")',
-            '@routes.Assets.at("javascripts/game/items/point.js")',
-            '@routes.Assets.at("javascripts/game/items/weapons/defaultWeapon.js")',
-            '@routes.Assets.at("javascripts/game/items/weapons/bounceotron.js")',
-            '@routes.Assets.at("javascripts/game/items/collectibles/healthPacket.js")',
-            '@routes.Assets.at("javascripts/game/items/collectibles/weaponDrop.js")',
-            "@routes.Assets.at("javascripts/game/enemies/rusher.js")",
-            "@routes.Assets.at("javascripts/game/enemies/boss.js")",
-            "@routes.Assets.at("javascripts/game/enemies/shooter.js")",
-            "@routes.Assets.at("javascripts/game/enemies/speeder.js")",
-            "@routes.Assets.at("javascripts/game/enemies/fatty.js")",
-            '@routes.Assets.at("javascripts/game/system/waves.js")',
-            '@routes.Assets.at("javascripts/game/system/pathfinder.js")',
-            '@routes.Assets.at("javascripts/game/world.js")',
-            '@routes.Assets.at("javascripts/game/character.js")'
-        ],
-        complete: function () {
-
-            basicScene = new BasicScene();
-            basicScene.onReady();
-            function animate() {
-                requestAnimationFrame(animate);
-                basicScene.frame();
-            }
-
-            document.getElementById("menu").style.display = "none";
-            basicScene.running = true;
-
-            animate();
+        var textures = {
+        general:{
+            background: '@routes.Assets.at("game/assets/textures/background.png")'
+        },
+        bullets:{
+            defaul: '@routes.Assets.at("game/assets/textures/bullets/main.jpg")'
+        },
+        mobs:{
+            evilBox: '@routes.Assets.at("game/assets/textures/mobs/evilBox.png")'
+        },
+        collectibles: {
+            hp: '@routes.Assets.at("game/assets/textures/collectibles/healthPacket.png")'
         }
-    }, {
-        load: [
-            '@routes.Assets.at("stylesheets/game/game.css")',
-            '@routes.Assets.at("stylesheets/game/ui.css")'
-        ]
     }
-]);
+        Modernizr.load([
+            '@routes.Assets.at("libs/javascript/three.min.js")',
+            '@routes.Assets.at("libs/javascript/SAT.js")',
+            '@routes.Assets.at("libs/javascript/astar.js")',
+            {
+                load: [
+                    '@routes.Assets.at("javascripts/game/utils.js")',
+                    '@routes.Assets.at("javascripts/game/app.js")',
+                    '@routes.Assets.at("javascripts/game/items/bullet.js")',
+                    '@routes.Assets.at("javascripts/game/items/point.js")',
+                    '@routes.Assets.at("javascripts/game/items/weapons/defaultWeapon.js")',
+                    '@routes.Assets.at("javascripts/game/items/weapons/bounceotron.js")',
+                    '@routes.Assets.at("javascripts/game/items/collectibles/healthPacket.js")',
+                    '@routes.Assets.at("javascripts/game/items/collectibles/weaponDrop.js")',
+                    "@routes.Assets.at("javascripts/game/enemies/rusher.js")",
+                    "@routes.Assets.at("javascripts/game/enemies/boss.js")",
+                    "@routes.Assets.at("javascripts/game/enemies/shooter.js")",
+                    "@routes.Assets.at("javascripts/game/enemies/speeder.js")",
+                    "@routes.Assets.at("javascripts/game/enemies/fatty.js")",
+                    '@routes.Assets.at("javascripts/game/system/waves.js")',
+                    '@routes.Assets.at("javascripts/game/system/pathfinder.js")',
+                    '@routes.Assets.at("javascripts/game/world.js")',
+                    '@routes.Assets.at("javascripts/game/character.js")'
+                ],
+                complete: function () {
+
+                    basicScene = new BasicScene();
+                    basicScene.onReady();
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        basicScene.frame();
+                    }
+
+                    document.getElementById("menu").style.display = "none";
+                    basicScene.running = true;
+
+                    animate();
+                }
+            }, {
+                load: [
+                    '@routes.Assets.at("stylesheets/game/game.css")',
+                    '@routes.Assets.at("stylesheets/game/ui.css")'
+                ]
+            }
+        ]);
     </script>
 } {
     <div id="ded">

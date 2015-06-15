@@ -10,11 +10,19 @@ var Point = Class.extend({
 
         this.mesh.add(this.lamp)
     },
+    size: 32,
     timeout: 300,
     spawnAt: function (vector3) {
         this.mesh.position.set(vector3.x, 48, vector3.z);
         basicScene.world.mesh.add(this.mesh);
         basicScene.world.collectibles.push(this);
+    },
+    update: function(){
+        this.rotate();
+        if(distance(basicScene.user.mesh.position,this.mesh.position) < this.size){
+            this.onCollect();
+            this.die();
+        }
     },
     rotate: function () {
         if (this.timeout > 0) {

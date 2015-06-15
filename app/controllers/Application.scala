@@ -99,8 +99,8 @@ object Application extends Controller with MongoController {
   def gameFromSeed(seed: Long) = Action.async {
     val gen = new Random(seed)
 
-    val height = gen.nextInt(15) + 10
-    val width = gen.nextInt(15) + 10
+    val height = gen.nextInt(50) + 25
+    val width = gen.nextInt(50) + 25
 
     val list = List.fill(width)(List.fill(height)(if (gen.nextInt(0 to 100 length) > 90) 0 else 1))
 

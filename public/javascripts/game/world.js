@@ -19,7 +19,7 @@ var World = Class.extend({
 
         var background = new THREE.Mesh(new THREE.SphereGeometry(3000, 64, 64), new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
-            map: THREE.ImageUtils.loadTexture('assets/textures/background.png')
+            map: THREE.ImageUtils.loadTexture(textures.general.background)
         }));
 
         var ground = new THREE.PlaneGeometry(mapWidth, mapHeight),
@@ -92,6 +92,7 @@ var World = Class.extend({
         this.bullets = [];
         this.playerTargetedBullets = [];
         this.enemies = [];
+        this.collectibles = [];
 
 
     },
@@ -111,9 +112,11 @@ var World = Class.extend({
         for(var i = 0; i < this.bullets.length; i++)
             this.bullets[i].fly()
     },
-    spawnPoints: [
-        
-    ],
+    collectiblesUpdate: function(){
+        for(var i = 0; i < this.collectibles.length; i++)
+            this.collectibles[i].update();
+    },
+    spawnPoints: [],
     spawnDelay: 240,
     currentWave: 0,
     enemyKinds: [Rusher, Speeder],
@@ -121,6 +124,7 @@ var World = Class.extend({
         this.playerCollide();
         this.fluBullets();
         this.updateEnemies();
+        this.collectiblesUpdate();
         basicScene.user.update();
     },
     spawn: function () {

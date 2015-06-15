@@ -11,6 +11,7 @@ var Rusher = Class.extend({
     velocity: 3*speedMultiplier,
     initialVelocity: 3,
     damage: 25,
+    pathFindingCooldown: 0,
     timeout: 60,
     size : 24,
     spawnAt: function (x, y, z) {
@@ -19,31 +20,34 @@ var Rusher = Class.extend({
         this.mesh.position.set(x, 100, z);
     },
     follow: function () {
-        var playerVector = new THREE.Vector3();
-        playerVector.x = basicScene.user.mesh.position.x;
-        playerVector.z = basicScene.user.mesh.position.z;
+        if (this.pathFindingCooldown <= 0) {
+            this.path = pathFinder.findShortestPath(this.mesh.position, basicScene.user.mesh.position);
+
+            if(this.path.length > 0)
+                this.pathFindingCooldown = 15;
+        } else
+            this.pathFindingCooldown -= 1;
+
+        if (this.path != undefined && this.path.length > 0) {
+
+            this.destination = new THREE.Vector3();
+            this.destination.x = mapXToPosX(this.path[0].x);
+            this.destination.z = mapYToPosZ(this.path[0].y);
+
+            if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
+                && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
+                this.path.splice(0, 1);
+                console.log("skracam")
+            }
+        }
+
+        var playerVector = new THREE.Vector3().copy(this.destination);
         var enemyVector = new THREE.Vector3().copy(this.mesh.position);
 
-        if(this.timeout > 0){
-            this.timeout -= 1;
-        } else if (parseInt(distance(enemyVector, playerVector)) < 48) {
+        this.direction = playerVector.sub(enemyVector).normalize();
+        this.direction.y = 0;
 
-            basicScene.user.applyDamage(this);
-            this.direction = new THREE.Vector3(0, 0, 0);
-
-        }
-        else {
-            this.direction = playerVector.sub(enemyVector).normalize();
-            this.direction.y = 0;
-            this.mesh.position.add(this.direction.multiplyScalar(this.velocity));
-        }
-
-        function distance(v1, v2) {
-            var dx = parseInt(v1.x) - parseInt(v2.x);
-            var dz = parseInt(v1.z) - parseInt(v2.z);
-
-            return Math.sqrt(dx * dx + dz * dz);
-        }
+        this.mesh.position.add(this.direction.multiplyScalar(this.velocity));
     },
     applyDamage: function (damage) {
         this.health -= damage;

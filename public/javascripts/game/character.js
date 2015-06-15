@@ -54,15 +54,6 @@ var Character = Class.extend({
         this.position = this.mesh.position;
         this.collider = new SAT.Box(new SAT.Vector(this.position.x-36,this.position.z-36),60,60);
 
-        var colliderPolygon = this.collider.toPolygon();
-        console.log(colliderPolygon);
-        for(var x = 0; x < colliderPolygon.points.length; x++){
-            var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material);
-            test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x;
-            test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y;
-            this.mesh.add(test)
-        }
-
         this.mesh.position.x = map.playerSpawnPoint.x*64-map.width/2*64+32;
         this.mesh.position.z = map.playerSpawnPoint.y*64-map.height/2*64+32;
 
@@ -117,7 +108,6 @@ var Character = Class.extend({
         }
     },
     isHeavy : false,
-    walkingSound: new Audio("assets/sounds/sfx/walk/stone.wav"),
     move: function () {
         'use strict';
         // We update our Object3D's position from our "direction"

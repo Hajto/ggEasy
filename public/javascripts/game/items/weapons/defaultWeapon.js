@@ -10,7 +10,7 @@ var DefaultWeapon = Class.extend({
     delay: 15,
     bulletMaterial: new THREE.MeshLambertMaterial({
         side: THREE.DoubleSide,
-        map: THREE.ImageUtils.loadTexture('assets/textures/evilBox.png')
+        map: THREE.ImageUtils.loadTexture(textures.bullets.defaul)
     }),
     shoot: function (direction) {
         var bullet = new Bullet();

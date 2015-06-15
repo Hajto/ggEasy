@@ -2,7 +2,7 @@ var Speeder = Class.extend({
     init: function (args) {
         var material = new THREE.MeshLambertMaterial({
             side: THREE.DoubleSide,
-            map: THREE.ImageUtils.loadTexture('assets/textures/evilBox.png')
+            map: THREE.ImageUtils.loadTexture(textures.mobs.evilBox)
         });
         var geometry = new THREE.TorusGeometry(20, 6, 16, 100);
         this.mesh = new THREE.Mesh(geometry, material);
@@ -15,7 +15,7 @@ var Speeder = Class.extend({
     damage: 25,
     timeout: 60,
     size: 20,
-    pathFindingCooldown: 120,
+    pathFindingCooldown: 60,
     destination: new THREE.Vector3(),
     spawnAt: function (x, y, z) {
         basicScene.world.mesh.add(this.mesh);
