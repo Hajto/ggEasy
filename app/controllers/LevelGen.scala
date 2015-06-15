@@ -23,7 +23,7 @@ object LevelGen {
     Future.successful(Redirect(routes.LevelGen.gameFromWidthHeight(width,height,seed)))
   }
 
-  def gameFromWidthSameAsHeight(width: Int, seed:Long) = {
+  def gameFromWidthSameAsHeight(width: Int, seed:Long) = Action.async {
     Future.successful(Redirect(routes.LevelGen.gameFromWidthHeight(width,width,seed)))
   }
 
@@ -32,7 +32,7 @@ object LevelGen {
     Future.successful(Redirect(routes.LevelGen.gameFromWidthHeightMobsSpawnCountAndSeed(width,height,mobSpawn,seed)))
   }
 
-  def gameFromWidthHeightMobsSpawnCountAndSeed(width: Int, height: Int, mobSpawners: Int, seed: Long) = {
+  def gameFromWidthHeightMobsSpawnCountAndSeed(width: Int, height: Int, mobSpawners: Int, seed: Long) = Action.async {
     val gen = new Random(seed)
 
     val list = List.fill(width)(List.fill(height)(if (gen.nextInt(0 to 100 length) > 90) 0 else 1))
