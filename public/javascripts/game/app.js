@@ -86,6 +86,7 @@ var BasicScene = Class.extend({
                     basicScene.user.currentWeapon = new DefaultWeapon();
                 basicScene.shoootingTimeout = currentWeapon.delay
             }
+            event.preventDefault();
 
         });
         document.addEventListener("keydown", function (e) {

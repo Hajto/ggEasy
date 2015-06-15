@@ -1,10 +1,10 @@
 var tileSize = 64;
 
-function mapXToPosX(x){
-    return x*64-(map.width/2*64)+32;
+function mapXToPosX(x) {
+    return x * 64 - (map.width / 2 * 64) + 32;
 }
-function mapYToPosZ(y){
-    return y*64-(map.height/2*64)+32;
+function mapYToPosZ(y) {
+    return y * 64 - (map.height / 2 * 64) + 32;
 }
 
 
@@ -12,10 +12,16 @@ var World = Class.extend({
     // Class constructor
     init: function (args) {
         'use strict';
+
+        this.spawnPointsObjects = [];
+        this.bullets = [];
+        this.playerTargetedBullets = [];
+        this.enemies = [];
+        this.collectibles = [];
         // Set the different geometries composing the room
-        var mapWidth = map.width*64, mapHeight = map.height*64;
-        this.offsetX = map.width/2*64;
-        this.offsetZ = map.height/2*64;
+        var mapWidth = map.width * 64, mapHeight = map.height * 64;
+        this.offsetX = map.width / 2 * 64;
+        this.offsetZ = map.height / 2 * 64;
 
         var background = new THREE.Mesh(new THREE.SphereGeometry(3000, 64, 64), new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
@@ -30,8 +36,7 @@ var World = Class.extend({
                 new THREE.PlaneGeometry(ground.height, height),
                 new THREE.PlaneGeometry(ground.width, height)
             ],
-            material = new THREE.MeshLambertMaterial(args),
-            i;
+            material = new THREE.MeshLambertMaterial(args);
         // Set the "world" modelisation object
         this.mesh = new THREE.Object3D();
 
@@ -56,27 +61,27 @@ var World = Class.extend({
         this.walls[3].position.z = -this.offsetZ;
 
         this.obstacles = [
-            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapHeight/2), mapWidth, 1),
-            new SAT.Box(new SAT.Vector( -mapWidth/2,-mapHeight/2), 1, mapHeight),
-            new SAT.Box(new SAT.Vector( -mapWidth/2,mapHeight/2), mapWidth, 1),
-            new SAT.Box(new SAT.Vector( mapWidth/2,-mapHeight/2), 1, mapHeight)
+            new SAT.Box(new SAT.Vector(-mapWidth / 2, -mapHeight / 2), mapWidth, 1),
+            new SAT.Box(new SAT.Vector(-mapWidth / 2, -mapHeight / 2), 1, mapHeight),
+            new SAT.Box(new SAT.Vector(-mapWidth / 2, mapHeight / 2), mapWidth, 1),
+            new SAT.Box(new SAT.Vector(mapWidth / 2, -mapHeight / 2), 1, mapHeight)
         ];
 
-        for(var i =0; i<map.map.length; i++){
-            for(var j=0; j< map.map[i].length; j++){
-                if(map.map[i][j] == 0){
-                    var cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(64,64,64), material);
-                    cubeMesh.translateX(i*64-this.offsetX+32);
-                    cubeMesh.translateZ(j*64-this.offsetZ+32);
+        for (var i = 0; i < map.map.length; i++) {
+            for (var j = 0; j < map.map[i].length; j++) {
+                if (map.map[i][j] == 0) {
+                    var cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(64, 64, 64), material);
+                    cubeMesh.translateX(i * 64 - this.offsetX + 32);
+                    cubeMesh.translateZ(j * 64 - this.offsetZ + 32);
                     cubeMesh.translateY(32);
                     this.mesh.add(cubeMesh);
 
-                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x-32,cubeMesh.position.z-32),64,64);
+                    var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x - 32, cubeMesh.position.z - 32), 64, 64);
                     this.obstacles.push(collider);
                     var colliderPolygon = collider.toPolygon();
                     console.log(colliderPolygon);
-                    for(var x = 0; x < colliderPolygon.points.length; x++){
-                        var test = new THREE.Mesh(new THREE.CubeGeometry(8,8,8),material);
+                    for (var x = 0; x < colliderPolygon.points.length; x++) {
+                        var test = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8), material);
                         test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x;
                         test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y;
                         this.mesh.add(test)
@@ -86,41 +91,49 @@ var World = Class.extend({
             }
         }
 
-        for(var i = 0; i < map.mobSpawnPoints.length;i++)
-            this.spawnPoints.push(new THREE.Vector3(map.mobSpawnPoints[i].x * tileSize, 32, map.mobSpawnPoints[i].y*tileSize))
-
-        this.bullets = [];
-        this.playerTargetedBullets = [];
-        this.enemies = [];
-        this.collectibles = [];
-
+        for (var i = 0; i < map.mobSpawnPoints.length; i++) {
+            this.spawnPoints.push(new THREE.Vector3(map.mobSpawnPoints[i].x * tileSize, 32, map.mobSpawnPoints[i].y * tileSize));
+            var mesh = new THREE.Mesh(new THREE.PlaneGeometry(64, 64),
+                    new THREE.MeshLambertMaterial({
+                        side: THREE.DoubleSide,
+                        map: THREE.ImageUtils.loadTexture(textures.environment.mobSpawn)
+                    })
+                );
+            mesh.position = new THREE.Vector3( mapXToPosX(map.mobSpawnPoints[i].x), 2, mapYToPosZ(map.mobSpawnPoints[i].y));
+            mesh.rotation.x = Math.PI/2;
+            this.spawnPointsObjects.push(mesh);
+            this.mesh.add(mesh)
+        }
 
     },
-    playerCollide: function(){
-        for(var a = 0; a < this.obstacles.length; a++){
+    playerCollide: function () {
+        for (var a = 0; a < this.obstacles.length; a++) {
 
             var response = new SAT.Response();
             var col = SAT.testPolygonPolygon(this.obstacles[a].toPolygon(), basicScene.user.collider.toPolygon(), response);
 
-            if(col){
+            if (col) {
                 var player = basicScene.user;
-                player.mesh.position.add(new THREE.Vector3(response.overlapV.x,0,response.overlapV.y));
+                player.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
             }
         }
     },
-    fluBullets : function(){
-        for(var i = 0; i < this.bullets.length; i++)
+    fluBullets: function () {
+        for (var i = 0; i < this.bullets.length; i++)
             this.bullets[i].fly()
     },
-    collectiblesUpdate: function(){
-        for(var i = 0; i < this.collectibles.length; i++)
+    collectiblesUpdate: function () {
+        for (var i = 0; i < this.collectibles.length; i++)
             this.collectibles[i].update();
     },
     spawnPoints: [],
     spawnDelay: 240,
     currentWave: 0,
     enemyKinds: [Rusher, Speeder],
-    update: function(){
+    update: function () {
+        for(var i = 0; i< this.spawnPointsObjects.length; i++)
+            this.spawnPointsObjects[i].rotation.z += 0.03
+
         this.playerCollide();
         this.fluBullets();
         this.updateEnemies();
@@ -145,9 +158,9 @@ var World = Class.extend({
             speedMultiplier += 0.3;
             basicScene.user.velocity = speedMultiplier * basicScene.user.initialVelocity;
             basicScene.stats.addPoint(5);
-        } else{
+        } else {
             this.spawnDelay -= 1;
-            document.getElementById("clock").innerHTML = "Remaining time: "+Math.round(this.spawnDelay/60)
+            document.getElementById("clock").innerHTML = "Remaining time: " + Math.round(this.spawnDelay / 60)
         }
     },
     randomSpawn: function () {
@@ -157,7 +170,7 @@ var World = Class.extend({
         enemy.spawnAt(chosenSpawnPoint.x, chosenSpawnPoint.y, chosenSpawnPoint.z);
     },
     updateEnemies: function () {
-        for(var i=0; i<this.enemies.length; i++)
+        for (var i = 0; i < this.enemies.length; i++)
             this.enemies[i].follow();
     }
 });

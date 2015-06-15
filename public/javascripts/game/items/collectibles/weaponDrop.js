@@ -1,4 +1,4 @@
-var HealthPacket = Class.extend({
+var WeaponDrop = Class.extend({
     init: function (args) {
         this.mesh = new THREE.Object3D();
 

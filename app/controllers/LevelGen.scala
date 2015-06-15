@@ -28,7 +28,7 @@ object LevelGen {
   }
 
   def gameFromWidthHeight(width: Int, height: Int, seed: Long) = Action.async {
-    val mobSpawn = new Random(seed).nextInt(width*height/2)
+    val mobSpawn = new Random(seed).nextInt(width*height/30)
     Future.successful(Redirect(routes.LevelGen.gameFromWidthHeightMobsSpawnCountAndSeed(width,height,mobSpawn,seed)))
   }
 
