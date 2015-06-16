@@ -15,6 +15,7 @@ var PathFinder = Class.extend({
     },
     getGridFromVector: function(Vector3){
         var graphPos = this.findPosInGrapthByVector(Vector3);
+        console.log();
         return this.graph.grid[graphPos.x][graphPos.y]
     },
     findShortestPath: function(source, destination){

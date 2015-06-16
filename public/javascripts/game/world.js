@@ -92,11 +92,12 @@ var World = Class.extend({
         }
 
         for (var i = 0; i < map.mobSpawnPoints.length; i++) {
-            this.spawnPoints.push(new THREE.Vector3(map.mobSpawnPoints[i].x * tileSize, 32, map.mobSpawnPoints[i].y * tileSize));
+            this.spawnPoints.push(new THREE.Vector3(mapXToPosX(map.mobSpawnPoints[i].x), 32, mapYToPosZ(map.mobSpawnPoints[i].y)));
             var mesh = new THREE.Mesh(new THREE.PlaneGeometry(64, 64),
-                    new THREE.MeshLambertMaterial({
+                    new THREE.MeshBasicMaterial({
                         side: THREE.DoubleSide,
-                        map: THREE.ImageUtils.loadTexture(textures.environment.mobSpawn)
+                        map: THREE.ImageUtils.loadTexture(textures.environment.mobSpawn),
+                        transparent: true, opacity: 0.5, color: 0xFF0000
                     })
                 );
             mesh.position = new THREE.Vector3( mapXToPosX(map.mobSpawnPoints[i].x), 2, mapYToPosZ(map.mobSpawnPoints[i].y));
@@ -137,6 +138,7 @@ var World = Class.extend({
         this.playerCollide();
         this.fluBullets();
         this.updateEnemies();
+        this.spawn();
         this.collectiblesUpdate();
         basicScene.user.update();
     },

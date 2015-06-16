@@ -56,7 +56,7 @@ var Shooter = Class.extend({
             this.path = pathFinder.findShortestPath(this.mesh.position, basicScene.user.mesh.position);
 
             if(this.path.length > 0)
-                this.pathFindingCooldown = 15;
+                this.pathFindingCooldown = 45;
         } else
             this.pathFindingCooldown -= 1;
 
@@ -69,7 +69,6 @@ var Shooter = Class.extend({
             if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
                 && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
                 this.path.splice(0, 1);
-                console.log("skracam")
             }
         }
 
