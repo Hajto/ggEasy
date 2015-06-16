@@ -36,7 +36,8 @@ function uploadMap() {
         "POST",
         data,
         function (response) {
-            console.log(response)
+            if(confirm("Informacja została zapisana pomyślnie czy chcesz przejść do widoku gry?"))
+                document.location.href = "../game/usermade/"+document.getElementById("mapName").value;
         }, function (response) {
             alert(response)
         }

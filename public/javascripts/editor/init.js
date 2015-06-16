@@ -19,7 +19,7 @@ var empty = {
     effect: function(i,j){
         var indexOrNot = mobSpawnIsDefined(j,i);
         if( indexOrNot == -1)
-            mobSpawnPoints.push({x:parseInt(j),y:parseInt(j)});
+            mobSpawnPoints.push({x:parseInt(j),y:parseInt(i)});
         else
             mobSpawnPoints.splice(indexOrNot,1);
     },
@@ -42,7 +42,7 @@ function init(){
     holder.innerHTML = "";
     holder.appendChild(table);
     document.getElementById("64Warning").style.display = "none";
-
+    loadContent(width,height);
 
     if(width != undefined && width > 0 && height > 0) document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "playerSpawn";
     for(var i = 0; i < mobSpawnPoints.length; i++){
@@ -84,19 +84,13 @@ function init(){
         var table = document.createElement("table");
         map = [];
 
-        for(var i = 0; i < width; i++) {
+        for(var i = 0; i < height; i++) {
             var row = document.createElement("tr");
             map[i] = [];
-            for (var j = 0; j < height; j++) {
+            for (var j = 0; j < width; j++) {
                 var cell = document.createElement("td");
-                if(repoData.map != undefined && repoData.map[i][j] == 0) {
-                    map[i][j] = 0;
-                    cell.className = "wall";
-                } else {
-                    map[i][j] = 1;
-                    cell.className = "empty";
-                }
-
+                map[i][j] = 1;
+                cell.className = "empty";
                 cell.id = i+" "+j;
                 cell.setAttribute("data-row", i.toString());
                 cell.setAttribute("data-col", j.toString());
@@ -131,6 +125,24 @@ function mobSpawnIsDefined(x,y){
         if(mobSpawnPoints[i].x == x && mobSpawnPoints[i].y == y)
             return i;
     return -1;
+}
+
+function loadContent(width,height){
+    if(repoData.map != undefined && repoData.map.length>0) {
+        map = repoData.map;
+        for (var i = 0; i < height; i++) {
+            for (var j = 0; j < width; j++) {
+                var cell = document.getElementById(j + " " + i);
+                if (repoData.map != undefined && repoData.map[i][j] == 0) {
+                    map[i][j] = 0;
+                    cell.className = "wall";
+                } else {
+                    map[i][j] = 1;
+                    cell.className = "empty";
+                }
+            }
+        }
+    }
 }
 
 function exportToJson(){
