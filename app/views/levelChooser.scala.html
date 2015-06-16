@@ -2,17 +2,18 @@
 @(elems: List[Level])
 
 @boiler(){
-
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/menu/main.css")" />
 }{
     <body>
         <div>
-            <table>
+            <table class="table">
                 <tr>
                     <th>Name</th>
                     <th>Width</th>
                     <th>Height</th>
                     <th>Enemies</th>
                     <th>Rating</th>
+                    <th></th>
                     <th></th>
                     <th></th>
 
@@ -25,6 +26,7 @@
                         <td>@level.mobSpawnPoints.length</td>
                         <td>@level.rating</td>
                         <td><a href="/edit/@level.name"><i class="fa fa-edit"></i></a></td>
+                        <td><a href="/game/usermade/@level.name"><i class="fa fa-play"></i></a></td>
                     </tr>
                 }
             </table>
