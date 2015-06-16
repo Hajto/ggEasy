@@ -73,6 +73,8 @@ var Boss = Class.extend({
             }
         }
 
+        this.checkPlayerDistance();
+
         var playerVector = new THREE.Vector3().copy(this.destination);
 
         this.direction = playerVector.sub(enemyVector).normalize();
@@ -115,5 +117,12 @@ var Boss = Class.extend({
         this.timeout = 60;
         //this.die();
         console.log("Bah")
+    },checkPlayerDistance: function(){
+        if(this.timeout > 0){
+            this.timeout -= 1;
+        } else if (parseInt(distance(this.mesh.position, basicScene.user.mesh.position)) < 48) {
+            basicScene.user.applyDamage(this);
+            this.timeout = 60;
+        }
     }
 });

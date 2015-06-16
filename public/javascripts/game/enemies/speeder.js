@@ -57,31 +57,9 @@ var Speeder = Class.extend({
         this.direction = playerVector.sub(enemyVector).normalize();
         this.direction.y = 0;
 
+        this.checkPlayerDistance();
 
-        if (this.timeout > 0) {
-            this.timeout -= 1;
-        } else {
-            var obstacles = basicScene.world.obstacles;
-
-            for (var i = 0; i < obstacles.length; i++) {
-                var response = new SAT.Response();
-                var col = SAT.testPolygonPolygon(obstacles[i].toPolygon(), this.collider.toPolygon(), response);
-
-                if (col) {
-                    this.mesh.position.add(new THREE.Vector3(response.overlapV.x, 0, response.overlapV.y));
-                }
-            }
-
-
-        }
         this.mesh.position.add(this.direction.multiplyScalar(this.velocity));
-
-        function distance(v1, v2) {
-            var dx = parseInt(v1.x) - parseInt(v2.x);
-            var dz = parseInt(v1.z) - parseInt(v2.z);
-
-            return Math.sqrt(dx * dx + dz * dz);
-        }
     },
     applyDamage: function (damage) {
         this.health -= damage;
@@ -113,5 +91,13 @@ var Speeder = Class.extend({
         this.timeout = 60;
         //this.die();
         console.log("Bah")
+    },
+    checkPlayerDistance: function(){
+        if(this.timeout > 0){
+            this.timeout -= 1;
+        } else if (parseInt(distance(this.mesh.position, basicScene.user.mesh.position)) < 48) {
+            basicScene.user.applyDamage(this);
+            this.timeout = 60;
+        }
     }
 });

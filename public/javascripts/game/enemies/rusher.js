@@ -2,7 +2,7 @@ var Rusher = Class.extend({
     init: function (args) {
         var material = new THREE.MeshLambertMaterial({
             side: THREE.DoubleSide,
-            map: THREE.ImageUtils.loadTexture('assets/textures/evilBox.png')
+            map: THREE.ImageUtils.loadTexture(textures.mobs.evilBox)
         });
         var geometry = new THREE.CubeGeometry(32, 32, 32);
         this.mesh = new THREE.Mesh(geometry, material);
@@ -44,6 +44,8 @@ var Rusher = Class.extend({
         var playerVector = new THREE.Vector3().copy(this.destination);
         var enemyVector = new THREE.Vector3().copy(this.mesh.position);
 
+        this.checkPlayerDistance();
+
         this.direction = playerVector.sub(enemyVector).normalize();
         this.direction.y = 0;
 
@@ -73,6 +75,14 @@ var Rusher = Class.extend({
                 }
             }
             return arr;
+        }
+    },
+    checkPlayerDistance: function(){
+        if(this.timeout > 0){
+            this.timeout -= 1;
+        } else if (parseInt(distance(this.mesh.position, basicScene.user.mesh.position)) < 48) {
+            basicScene.user.applyDamage(this);
+            this.timeout = 60;
         }
     },
     onPlayerHit: function () {
