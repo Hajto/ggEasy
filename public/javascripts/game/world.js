@@ -91,14 +91,14 @@ var World = Class.extend({
         for (var i = 0; i < map.mobSpawnPoints.length; i++) {
             this.spawnPoints.push(new THREE.Vector3(mapXToPosX(map.mobSpawnPoints[i].x), 32, mapYToPosZ(map.mobSpawnPoints[i].y)));
             var mesh = new THREE.Mesh(new THREE.PlaneGeometry(64, 64),
-                    new THREE.MeshBasicMaterial({
-                        side: THREE.DoubleSide,
-                        map: THREE.ImageUtils.loadTexture(textures.environment.mobSpawn),
-                        transparent: true, opacity: 0.5, color: 0xFF0000
-                    })
-                );
-            mesh.position = new THREE.Vector3( mapXToPosX(map.mobSpawnPoints[i].x), 2, mapYToPosZ(map.mobSpawnPoints[i].y));
-            mesh.rotation.x = Math.PI/2;
+                new THREE.MeshBasicMaterial({
+                    side: THREE.DoubleSide,
+                    map: THREE.ImageUtils.loadTexture(textures.environment.mobSpawn),
+                    transparent: true, opacity: 0.5, color: 0xFF0000
+                })
+            );
+            mesh.position = new THREE.Vector3(mapXToPosX(map.mobSpawnPoints[i].x), 2, mapYToPosZ(map.mobSpawnPoints[i].y));
+            mesh.rotation.x = Math.PI / 2;
             this.spawnPointsObjects.push(mesh);
             this.mesh.add(mesh)
         }
@@ -130,7 +130,7 @@ var World = Class.extend({
     enemyKinds: [Rusher, Speeder],
     update: function () {
         /*for(var i = 0; i< this.spawnPointsObjects.length; i++)
-            this.spawnPointsObjects[i].rotation.z += 0.03*/
+         this.spawnPointsObjects[i].rotation.z += 0.03*/
 
         this.playerCollide();
         this.fluBullets();
@@ -158,7 +158,10 @@ var World = Class.extend({
             basicScene.user.velocity = speedMultiplier * basicScene.user.initialVelocity;
             basicScene.stats.addPoint(5);
         } else {
-            this.spawnDelay -= 1;
+            if (this.enemies.length > 0 && this.spawnDelay > 300) {
+                this.spawnDelay = 300
+            } else
+                this.spawnDelay -= 1;
             document.getElementById("clock").innerHTML = "Remaining time: " + Math.round(this.spawnDelay / 60)
         }
     },
