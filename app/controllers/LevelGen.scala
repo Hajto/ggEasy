@@ -61,6 +61,6 @@ object LevelGen {
 
     val level = new Level("generated",width,height,list,generatePlayerSpawnPoint,generateSpawnPoints(mobSpawners),None)
 
-    Future.successful(Ok(views.html.game(Html(Json.toJson(level).toString()))))
+    Future.successful(Ok(views.html.game(Html(Json.toJson(level).toString()),seed)))
   }
 }

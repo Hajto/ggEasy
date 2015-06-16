@@ -23,7 +23,7 @@ var World = Class.extend({
         this.offsetX = map.width / 2 * 64;
         this.offsetZ = map.height / 2 * 64;
 
-        var background = new THREE.Mesh(new THREE.SphereGeometry(3000, 64, 64), new THREE.MeshBasicMaterial({
+        var background = new THREE.Mesh(new THREE.SphereGeometry(map.width > map.height ? map.width*64: map.height * 64, 64, 64), new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             map: THREE.ImageUtils.loadTexture(textures.general.background)
         }));
@@ -135,7 +135,7 @@ var World = Class.extend({
         this.playerCollide();
         this.fluBullets();
         this.updateEnemies();
-        //this.spawn();
+        this.spawn();
         this.collectiblesUpdate();
         basicScene.user.update();
     },

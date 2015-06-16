@@ -2,6 +2,7 @@ package controllers
 
 import model.Level
 import model.Point
+import utils.helpers.Mongo._
 import play.api._
 import play.api.libs.json._
 import play.modules.reactivemongo.json.BSONFormats._
@@ -24,18 +25,14 @@ import scala.util.Random
 
 object Application extends Controller with MongoController {
 
-  def $(a: (String, JsValueWrapper)*) = Json.obj(a: _*)
-
   val idReads: Reads[String] = (JsPath \ "_id").read[String]
-
-  def collection(repo: String): JSONCollection = db.collection[JSONCollection](repo)
 
   def maps = collection("maps")
 
   def game(levelName: String) = Action.async {
     selectMaps($("name" -> levelName)).map { elems =>
       if (elems.nonEmpty)
-        Ok(views.html.game(Html(Json.toJson(elems.head).toString())))
+        Ok(views.html.game(Html(Json.toJson(elems.head).toString()),0))
       else
         Ok("No such level")
     }

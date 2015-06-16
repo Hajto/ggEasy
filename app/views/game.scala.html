@@ -1,10 +1,11 @@
-@(mapJSON: Html)
+@(mapJSON: Html, seed: Long)
 
 @boiler() {
     <script src="@routes.Assets.at("libs/javascript/modernizr.js")"></script>
     <script src="@routes.Assets.at("javascripts/game/loader/script.js")"></script>
     <script>
         var map = JSON.parse('@mapJSON');
+        var seed = @seed;
         var textures = {
         general:{
             background: '@routes.Assets.at("game/assets/textures/background.png")'
@@ -45,6 +46,7 @@
                     "@routes.Assets.at("javascripts/game/enemies/mineDroper.js")",
                     '@routes.Assets.at("javascripts/game/system/waves.js")',
                     '@routes.Assets.at("javascripts/game/system/pathfinder.js")',
+                    '@routes.Assets.at("javascripts/game/connection/ajaxAPI.js")',
                     '@routes.Assets.at("javascripts/game/world.js")',
                     '@routes.Assets.at("javascripts/game/character.js")'
                 ],
@@ -74,11 +76,17 @@
     <div id="ded">
         <div class="absoluteCenter">
             <div id="restart" onclick="document.location.reload()"> Padłeś, grasz jeszcze raz? </div>
+            <div id="send" onclick="sendSave()" > Wyślij wynik</div>
         </div>
     </div>
     <div id="menu">
         <div class="absoluteCenter">
             <div id="play"> Graj! </div>
+        </div>
+    </div>
+    <div id="pause">
+        <div class="absoluteCenter">
+            <div></div>
         </div>
     </div>
     <div id="weapon">

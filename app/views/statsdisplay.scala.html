@@ -1,0 +1,38 @@
+@import model.StatisticEntry
+@(elems: List[StatisticEntry])
+
+@boiler() {
+
+} {
+    <body>
+        <div><h1>Random Games Statistics</h1></div>
+        <div>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Width</th>
+                    <th>Height</th>
+                    <th>Points</th>
+                    <th>Killed</th>
+                    <th>Seed</th>
+                    <th></th>
+
+                </tr>
+                @for(level <- elems) {
+                    <tr>
+                        <td>@level.name</td>
+                        <td>@level.width</td>
+                        <td>@level.height</td>
+                        <td>@level.points</td>
+                        <td>@level.killed</td>
+                        <td>@level.seed</td>
+                        <td><a href="@routes.LevelGen.gameFromWidthHeight(level.width,level.height,level.seed)">
+                            <i class="fa fa-play"></i>
+                        </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </body>
+}

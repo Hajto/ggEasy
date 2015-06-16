@@ -14,6 +14,9 @@ GET         /game/random/:seed/:width/:height                  controllers.Level
 GET         /game/random/:seed/:width/:height/:mobSpawn        controllers.LevelGen.gameFromWidthHeightMobsSpawnCountAndSeed(width : Int, height: Int, mobSpawn: Int, seed:Long)
 GET         /game/usermade/:level                              controllers.Application.game(level: String)
 
+POST        /statistics/add                                    controllers.Stats.registerEntry
+GET         /statistics/show                                   controllers.Stats.listEntries
+
 GET         /select/list                                       controllers.Application.selectAll
 GET         /select                                            controllers.Application.showAll
 

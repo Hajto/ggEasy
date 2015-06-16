@@ -208,3 +208,23 @@ var BasicScene = Class.extend({
         test.spawnAt(264,0,264)
     }
 });
+
+var sendSave = function(){
+    var name = prompt("Wprowadź imię");
+
+    if(name.length > 0)
+    ajaxAPI(new _haitoRequest(
+        document.location.origin + "/statistics/add",
+        "POST",
+        {
+            name: name,
+            width: parseInt(map.width),
+            height: parseInt(map.height),
+            seed: parseInt(seed),
+            points: parseInt(basicScene.user.stats.points),
+            killed: parseInt(basicScene.user.stats.killed)
+        },
+        function(res){ console.log(res)},
+        function(){}
+    ))
+};
