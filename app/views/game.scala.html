@@ -10,7 +10,8 @@
             background: '@routes.Assets.at("game/assets/textures/background.png")'
         },
         bullets:{
-            defaul: '@routes.Assets.at("game/assets/textures/bullets/main.jpg")'
+            defaul: '@routes.Assets.at("game/assets/textures/bullets/main.jpg")',
+            dark: '@routes.Assets.at("game/assets/textures/bullets/dark-metal-texture.jpg")'
         },
         mobs:{
             evilBox: '@routes.Assets.at("game/assets/textures/mobs/evilBox.png")'
@@ -24,7 +25,7 @@
     };
         Modernizr.load([
             '@routes.Assets.at("libs/javascript/three.min.js")',
-            '@routes.Assets.at("libs/javascript/SAT.js")',
+            '@routes.Assets.at("libs/javascript/SAT.min.js")',
             '@routes.Assets.at("libs/javascript/astar.js")',
             {
                 load: [
@@ -41,6 +42,7 @@
                     "@routes.Assets.at("javascripts/game/enemies/shooter.js")",
                     "@routes.Assets.at("javascripts/game/enemies/speeder.js")",
                     "@routes.Assets.at("javascripts/game/enemies/fatty.js")",
+                    "@routes.Assets.at("javascripts/game/enemies/mineDroper.js")",
                     '@routes.Assets.at("javascripts/game/system/waves.js")',
                     '@routes.Assets.at("javascripts/game/system/pathfinder.js")',
                     '@routes.Assets.at("javascripts/game/world.js")',
@@ -71,7 +73,7 @@
 } {
     <div id="ded">
         <div class="absoluteCenter">
-            <div id="restart"> Padłeś, grasz jeszcze raz? </div>
+            <div id="restart" onclick="document.location.reload()"> Padłeś, grasz jeszcze raz? </div>
         </div>
     </div>
     <div id="menu">

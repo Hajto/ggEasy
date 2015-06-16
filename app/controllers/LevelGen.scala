@@ -52,7 +52,14 @@ object LevelGen {
       loop(count, List())
     }
 
-    val level = new Level("generated",width,height,list,new Point(0,0),generateSpawnPoints(mobSpawners),None)
+    def generatePlayerSpawnPoint : Point = {
+      val x = gen.nextInt(height)
+      val y = gen.nextInt(width)
+      if(list(y)(x) == 1) Point(y,x)
+      else generatePlayerSpawnPoint
+    }
+
+    val level = new Level("generated",width,height,list,generatePlayerSpawnPoint,generateSpawnPoints(mobSpawners),None)
 
     Future.successful(Ok(views.html.game(Html(Json.toJson(level).toString()))))
   }

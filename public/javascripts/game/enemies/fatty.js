@@ -23,7 +23,7 @@ var Fatty = Class.extend({
     },
     health: 30,
     velocity: 2*speedMultiplier,
-    initialVelocity: 2,
+    initialVelocity: 2.3,
     pathFindingCooldown: 0,
     damage: 20,
     timeout: 90,
@@ -49,7 +49,7 @@ var Fatty = Class.extend({
             this.path = pathFinder.findShortestPath(this.mesh.position, basicScene.user.mesh.position);
 
             if(this.path.length > 0)
-                this.pathFindingCooldown = 15;
+                this.pathFindingCooldown = 45;
         } else
             this.pathFindingCooldown -= 1;
 
@@ -62,7 +62,7 @@ var Fatty = Class.extend({
             if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
                 && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
                 this.path.splice(0, 1);
-                console.log("skracam")
+                //console.log("skracam")
             }
         }
 

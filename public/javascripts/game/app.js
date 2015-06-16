@@ -10,7 +10,7 @@ var BasicScene = Class.extend({
         this.scene.add(this.camera);
 
         this.light = new THREE.PointLight();
-        this.light.position.set(-256, 256, -256);
+        this.light.position.set(0, 256, 0);
         this.scene.add(this.light);
 
         this.renderer = new THREE.WebGLRenderer();
@@ -204,7 +204,7 @@ var BasicScene = Class.extend({
 
     },
     onReady: function(){
-        var test = new Shooter();
+        var test = new MineDroper();
         test.spawnAt(264,0,264)
     }
 });

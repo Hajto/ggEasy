@@ -51,6 +51,12 @@ var World = Class.extend({
             this.walls.push(new THREE.Mesh(walls[i], material));
             this.walls[i].position.y = height / 2;
             this.mesh.add(this.walls[i]);
+
+            this.light = new THREE.PointLight();
+            this.light.position.set(this.walls[i].position.x, 5000, this.walls[i].position.z);
+            this.light.intensity = 1;
+            this.light.distance = 1000;
+            this.mesh.add(this.light);
         }
         this.walls[0].rotation.y = -Math.PI / 2;
         this.walls[0].position.x = this.offsetX;
@@ -78,15 +84,6 @@ var World = Class.extend({
 
                     var collider = new SAT.Box(new SAT.Vector(cubeMesh.position.x - 32, cubeMesh.position.z - 32), 64, 64);
                     this.obstacles.push(collider);
-                    var colliderPolygon = collider.toPolygon();
-                    console.log(colliderPolygon);
-                    for (var x = 0; x < colliderPolygon.points.length; x++) {
-                        var test = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8), material);
-                        test.position.x = colliderPolygon.pos.x + colliderPolygon.calcPoints[x].x;
-                        test.position.z = colliderPolygon.pos.y + colliderPolygon.calcPoints[x].y;
-                        this.mesh.add(test)
-                    }
-
                 }
             }
         }
@@ -132,13 +129,13 @@ var World = Class.extend({
     currentWave: 0,
     enemyKinds: [Rusher, Speeder],
     update: function () {
-        for(var i = 0; i< this.spawnPointsObjects.length; i++)
-            this.spawnPointsObjects[i].rotation.z += 0.03
+        /*for(var i = 0; i< this.spawnPointsObjects.length; i++)
+            this.spawnPointsObjects[i].rotation.z += 0.03*/
 
         this.playerCollide();
         this.fluBullets();
         this.updateEnemies();
-        this.spawn();
+        //this.spawn();
         this.collectiblesUpdate();
         basicScene.user.update();
     },

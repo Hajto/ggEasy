@@ -31,7 +31,7 @@ var Boss = Class.extend({
     },
     health: 150,
     velocity: 2*speedMultiplier,
-    initialVelocity: 2,
+    initialVelocity: 2.3,
     damage: 20,
     timeout: 90,
     pathFindingCooldown: 0,
@@ -69,7 +69,7 @@ var Boss = Class.extend({
             if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
                 && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
                 this.path.splice(0, 1);
-                console.log("skracam")
+                //console.log("skracam")
             }
         }
 

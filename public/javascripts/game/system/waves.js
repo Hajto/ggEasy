@@ -1,5 +1,5 @@
 var waves = [{
-    numberOfEnemies: 15,
+    numberOfEnemies: 10,
     duration: 1800,
     extra:[]
 },{

@@ -1,36 +1,36 @@
-var Shooter = Class.extend({
+var MineDroper = Class.extend({
     init: function (args) {
         this.mesh = new THREE.Object3D();
 
         var head = new THREE.Mesh(
             new THREE.SphereGeometry(16, 8, 8),
             new THREE.MeshLambertMaterial({
-                color: 0xF5F5F5
+                color: 0xde0000
             })
         );
-
 
         this.body = new THREE.Mesh(
             new THREE.SphereGeometry(32, 8, 8),
             new THREE.MeshLambertMaterial({
-                color: 0xF5F5F5,
-                wireframe: true
+                color: 0xF5F5F5
             })
         );
+
+        this.body.translateY(-16);
 
         this.mesh.add(head);
         this.mesh.add(this.body);
 
     },
     health: 30,
-    velocity: 0.5*speedMultiplier,
+    velocity: 0.5 * speedMultiplier,
     initialVelocity: 1,
     damage: 15,
     timeout: 120,
     specialAbility: 1,
     size: 24,
     pathFindingCooldown: 0,
-    destination: new THREE.Vector3(0,0,0),
+    destination: new THREE.Vector3(0, 0, 0),
     spawnAt: function (x, y, z) {
         basicScene.world.mesh.add(this.mesh);
         basicScene.world.enemies.push(this);
@@ -40,13 +40,9 @@ var Shooter = Class.extend({
         this.body.rotation.y += 0.5;
 
         if (this.specialAbility <= 0) {
-            var bullet = new Bullet();
+            var bullet = new Mine();
             bullet.damage = this.damage;
-            bullet.mesh.material = new THREE.MeshBasicMaterial({
-                color: 0xff0000
-            });
             bullet.shootPlayer(this.mesh.position);
-            //console.log("Shooting");
 
             this.specialAbility = 60;
         } else
@@ -55,7 +51,7 @@ var Shooter = Class.extend({
         if (this.pathFindingCooldown <= 0) {
             this.path = pathFinder.findShortestPath(this.mesh.position, basicScene.user.mesh.position);
 
-            if(this.path.length > 0)
+            if (this.path.length > 0)
                 this.pathFindingCooldown = 60;
         } else
             this.pathFindingCooldown -= 1;
@@ -88,7 +84,7 @@ var Shooter = Class.extend({
 
     },
     die: function () {
-        if(Math.round(Math.random()*100) > 50){
+        if (Math.round(Math.random() * 100) > 50) {
             var hp = new HealthPacket();
             hp.spawnAt(this.mesh.position)
         } else {
@@ -114,6 +110,67 @@ var Shooter = Class.extend({
     onPlayerHit: function () {
         this.timeout = 60;
         //this.die();
-        console.log("Bah")
+        //console.log("Bah")
+    }
+});
+
+var Mine = Class.extend({
+    init: function (args) {
+        var dot= new THREE.Mesh(new THREE.SphereGeometry(4, 8, 8), new THREE.MeshLambertMaterial({
+            color: 0xED0000
+        }));
+        dot.translateY(-4);
+
+        var bottom = new THREE.Mesh(new THREE.SphereGeometry(8, 8, 8), new THREE.MeshLambertMaterial({
+            color: 0xEFEFEF
+        }));
+        bottom.translateY(-12);
+
+        this.mesh = new THREE.Object3D;
+        this.mesh.add(dot);
+        this.mesh.add(bottom);
+        this.collider = new SAT.Circle(new SAT.Vector(this.mesh.position.x - 8, this.mesh.position.z - 8), 8);
+
+    },
+    velocity: 10,
+    collisionRemaining: 3,
+    life: 300,
+    direction: new THREE.Vector3(0, 0, 0),
+    shootPlayer: function (position) {
+        this.mesh.position.set(position.x, 16, position.z);
+        var playerVector = new THREE.Vector3().copy(basicScene.user.mesh.position);
+        var enemyVector = this.mesh.position;
+        this.direction = playerVector.sub(enemyVector).normalize();
+        basicScene.world.bullets.push(this);
+        basicScene.world.mesh.add(this.mesh);
+        this.playerTarget = true;
+    },
+    fly: function () {
+        if (this.life > 0) {
+            if (distance(this.mesh.position, basicScene.user.mesh.position) < 32) {
+                basicScene.user.applyDamage(this)
+            }
+            this.life -= 1;
+        } else
+            this.die();
+
+    },
+    die: function () {
+        removeA(basicScene.world.bullets, this);
+        basicScene.world.mesh.remove(this.mesh);
+
+        function removeA(arr) {
+            var what, a = arguments, L = a.length, ax;
+            while (L > 1 && arr.length) {
+                what = a[--L];
+                while ((ax = arr.indexOf(what)) !== -1) {
+                    arr.splice(ax, 1);
+                }
+            }
+            return arr;
+        }
+    },
+    onPlayerHit: function () {
+        this.die();
     }
 });

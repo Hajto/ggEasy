@@ -2,7 +2,7 @@ var Rusher = Class.extend({
     init: function (args) {
         var material = new THREE.MeshLambertMaterial({
             side: THREE.DoubleSide,
-            map: THREE.ImageUtils.loadTexture(textures.mobs.evilBox)
+            map: THREE.ImageUtils.loadTexture(textures.bullets.dark)
         });
         var geometry = new THREE.CubeGeometry(32, 32, 32);
         this.mesh = new THREE.Mesh(geometry, material);
@@ -37,7 +37,7 @@ var Rusher = Class.extend({
             if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
                 && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
                 this.path.splice(0, 1);
-                console.log("skracam")
+                //console.log("skracam")
             }
         }
 
