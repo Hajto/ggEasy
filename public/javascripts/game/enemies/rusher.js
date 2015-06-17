@@ -24,7 +24,7 @@ var Rusher = Class.extend({
             this.path = pathFinder.findShortestPath(this.mesh.position, basicScene.user.mesh.position);
 
             if(this.path.length > 0)
-                this.pathFindingCooldown = 15;
+                this.pathFindingCooldown = 60;
         } else
             this.pathFindingCooldown -= 1;
 
