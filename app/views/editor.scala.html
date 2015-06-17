@@ -13,9 +13,9 @@
                 Każda mapa MUSI być prostokątem<br/>, poniżej wpisz ilość segmentów szerokośc <br/> i ilość segmentów wysokości
                 <form>
                     <label for="mapWidth">Szerokość mapy: </label>
-                    <input id="mapWidth" name="mapWidth" type="number" /> <br />
+                    <input id="mapWidth" name="mapWidth" type="number" min="20" value="20" /> <br />
                     <label for="mapHeight">Wysokość mapy: </label>
-                    <input id="mapHeight" name="mapHeight" type="number" /> <br/>
+                    <input id="mapHeight" name="mapHeight" type="number" min="20" value="20" max="100" /> <br/>
                     <button class="btn btn-danger" type="button" id="generateTable">Generuj plansze</button>
                 </form>
                     <label for="mapName">Nazwa mapy: </label><input id="mapName" name="mapName" value="@name" />

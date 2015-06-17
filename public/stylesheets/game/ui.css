@@ -58,7 +58,7 @@ body{
     color: white;
 }
 
-#menu, #intro, #ded{
+#menu, #intro, #ded, #pause{
     position: absolute;
     top:0;
     left: 0;
@@ -85,7 +85,7 @@ body{
     top: 0; left: 0; bottom: 0; right: 0;
 }
 
-#play, #restart, #send {
+#play, #restart, #send, .buttonish{
     background: rgba(255,0,0, 0.3);
     color: white;
     border: 1px solid red;
@@ -97,6 +97,10 @@ body{
 
 #restart, #send{
     font-size: 2em;
+}
+
+#pause {
+    display: none;
 }
 
 video {

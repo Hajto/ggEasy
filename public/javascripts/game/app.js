@@ -106,8 +106,13 @@ var BasicScene = Class.extend({
                     controls.up = true;
                     break;
                 case 27:
-                    if (basicScene.user.health > 0)
+                    if (basicScene.user.health > 0) {
                         basicScene.running = !basicScene.running;
+                        if(basicScene.running)
+                            document.getElementById("pause").style.display = "none";
+                        else
+                            document.getElementById("pause").style.display = "block";
+                    }
                     break;
                 default:
                     prevent = false;

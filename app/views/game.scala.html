@@ -59,7 +59,7 @@
                         basicScene.frame();
                     }
 
-                    document.getElementById("menu").style.display = "none";
+//                    document.getElementById("menu").style.display = "none";
                     basicScene.running = true;
 
                     animate();
@@ -76,17 +76,12 @@
     <div id="ded">
         <div class="absoluteCenter">
             <div id="restart" onclick="document.location.reload()"> Padłeś, grasz jeszcze raz? </div>
-            <div id="send" onclick="sendSave()" > Wyślij wynik</div>
-        </div>
-    </div>
-    <div id="menu">
-        <div class="absoluteCenter">
-            <div id="play"> Graj! </div>
+            @if(seed > 0){ <div id="send" onclick="sendSave()" > Wyślij wynik</div>}
         </div>
     </div>
     <div id="pause">
         <div class="absoluteCenter">
-            <div></div>
+            <div class="buttonish"> Gra wstrzymana</div>
         </div>
     </div>
     <div id="weapon">

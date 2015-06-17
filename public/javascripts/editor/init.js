@@ -53,15 +53,13 @@ function init(){
     document.getElementById("generateTable").addEventListener("click",function(){
         var width = parseInt(document.getElementById("mapWidth").value);
         var height = parseInt(document.getElementById("mapHeight").value);
-        if(width > 0 && height > 0) {
+        if(width > 20 && height > 20) {
             var table = generateEditTable(width, height);
             var holder = document.getElementById("wallEditor");
             holder.innerHTML = "";
             holder.appendChild(table);
-            document.getElementById("64Warning").style.display = "none";
+            //document.getElementById("64Warning").style.display = "none";
             document.getElementById(playerSpawnPoint.x + " " + playerSpawnPoint.y).className = "playerSpawn"
-        } else {
-            document.getElementById("64Warning").style.display = "block";
         }
     },false);
     document.getElementById("wallPlacer").addEventListener("click", function () {
@@ -74,7 +72,7 @@ function init(){
         nextPlace = playerSpawn;
     },false);
     document.getElementById("sendButton").addEventListener("click", function () {
-        if(document.getElementById("mapName").value.length > 0 && mobSpawnPoints.length > 0)
+        if(document.getElementById("mapName").value.length > 0 && document.getElementById("mapName").value != "temp" && mobSpawnPoints.length > 0)
         uploadMap();
         else
             alert("Informacja nie jest kompletna")

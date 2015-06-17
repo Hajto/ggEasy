@@ -19,7 +19,7 @@ video {
     z-index: 1001;
 }
 
-#play, #selectLevel {
+#play, #selectLevel, .buttonish {
     background: rgba(255,0,0, 0.3);
     color: white;
     border: 1px solid red;
