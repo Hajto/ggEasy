@@ -14,7 +14,7 @@ var Bounceotron = Class.extend({
     }),
     shoot: function (direction) {
         var bullet = new Bullet();
-        bullet.mesh = new THREE.Mesh(new THREE.SphereGeometry(16,16,16), this.bulletMaterial);
+        bullet.mesh = new THREE.Mesh(new THREE.SphereGeometry(16, 16, 16), this.bulletMaterial);
         bullet.collisionRemaining = 10;
         bullet.damage = this.damage;
         bullet.velocity = 30;
@@ -25,5 +25,16 @@ var Bounceotron = Class.extend({
     },
     updateAmmo: function () {
         document.getElementById("weapon").innerHTML = this.name + " " + this.ammo + "/" + this.maxAmmo
+    },
+    dropAt: function (vector3) {
+        var drop = WeaponDrop();
+        drop.setWeaponMesh(new THREE.Mesh(new THREE.CubeGeometry(32, 32, 32),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture(textures.weapons.bounceotron),
+                side: THREE.DoubleSide
+            })
+        ));
+        drop.setWeapon(this);
+        drop.spawnAt(vector3)
     }
 });

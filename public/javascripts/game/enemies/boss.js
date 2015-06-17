@@ -90,9 +90,13 @@ var Boss = Class.extend({
 
     },
     die: function () {
-        if(Math.round(Math.random()*100) > 50){
+        var chance = Math.round(Math.random()*100);
+        if(chance > 50){
             var hp = new HealthPacket();
             hp.spawnAt(this.mesh.position)
+        } else if(chance < 80){
+            var bouncedrop = new Bounceotron();
+            bouncedrop.dropAt(this.mesh.position)
         } else {
             var point = new Point();
             point.spawnAt(this.mesh.position);

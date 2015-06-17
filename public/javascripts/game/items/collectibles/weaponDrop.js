@@ -20,6 +20,12 @@ var WeaponDrop = Class.extend({
         this.mesh.rotation.z += 0.01;
         this.mesh.rotation.x += 0.01
     },
+    setWeapon: function(weapon){
+        this.containingWeapon = weapon;
+    },
+    setWeaponMesh: function(mesh){
+        this.mesh = mesh;
+    },
     maxDistance: 32,
     onCollect: function () {
         basicScene.user.currentWeapon = this.containingWeapon;
