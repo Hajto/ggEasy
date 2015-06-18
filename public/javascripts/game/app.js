@@ -50,6 +50,9 @@ var BasicScene = Class.extend({
         },
         setWave: function (wave) {
             document.getElementById("wave").innerHTML = "Wave: " + wave
+        },
+        updateWeapon: function(){
+
         }
 
     },
@@ -82,8 +85,9 @@ var BasicScene = Class.extend({
                 var currentWeapon = basicScene.user.currentWeapon;
                 if (currentWeapon.isIninityAmmo || currentWeapon.ammo > 0) {
                     currentWeapon.shoot(new THREE.Vector3(mouseVector.x, 0, -mouseVector.y).normalize())
-                } else
+                } else {
                     basicScene.user.currentWeapon = new DefaultWeapon();
+                }
                 basicScene.shoootingTimeout = currentWeapon.delay
             }
             event.preventDefault();

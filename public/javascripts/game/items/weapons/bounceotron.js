@@ -27,7 +27,7 @@ var Bounceotron = Class.extend({
         document.getElementById("weapon").innerHTML = this.name + " " + this.ammo + "/" + this.maxAmmo
     },
     dropAt: function (vector3) {
-        var drop = WeaponDrop();
+        var drop = new WeaponDrop();
         drop.setWeaponMesh(new THREE.Mesh(new THREE.CubeGeometry(32, 32, 32),
             new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture(textures.weapons.bounceotron),
@@ -36,5 +36,20 @@ var Bounceotron = Class.extend({
         ));
         drop.setWeapon(this);
         drop.spawnAt(vector3)
+    },
+    die: function () {
+        removeA(basicScene.world.collectibles, this);
+        basicScene.world.mesh.remove(this.mesh);
+
+        function removeA(arr) {
+            var what, a = arguments, L = a.length, ax;
+            while (L > 1 && arr.length) {
+                what = a[--L];
+                while ((ax = arr.indexOf(what)) !== -1) {
+                    arr.splice(ax, 1);
+                }
+            }
+            return arr;
+        }
     }
 });

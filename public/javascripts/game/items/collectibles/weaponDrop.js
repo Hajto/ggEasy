@@ -9,16 +9,22 @@ var WeaponDrop = Class.extend({
 
         this.mesh.add(this.lamp)
     },
+    size:32,
     containingWeapon: null,
     spawnAt: function (vector3) {
         this.mesh.position.set(vector3.x, 48, vector3.z);
         basicScene.world.mesh.add(this.mesh);
         basicScene.world.collectibles.push(this);
     },
-    rotate: function () {
+    update: function () {
         this.mesh.rotation.y += 0.01;
         this.mesh.rotation.z += 0.01;
-        this.mesh.rotation.x += 0.01
+        this.mesh.rotation.x += 0.01;
+
+        if (distance(basicScene.user.mesh.position, this.mesh.position) < this.size) {
+            this.onCollect();
+            this.die();
+        }
     },
     setWeapon: function(weapon){
         this.containingWeapon = weapon;

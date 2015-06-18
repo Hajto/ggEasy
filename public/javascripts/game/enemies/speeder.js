@@ -45,7 +45,6 @@ var Speeder = Class.extend({
             if (this.path[0].x == Math.round(pathFinder.findXInMapByPosX(this.mesh.position.x))
                 && this.path[0].y == Math.round(pathFinder.findYInMapByPosZ(this.mesh.position.z))) {
                 this.path.splice(0, 1);
-                console.log("skracam")
             }
         }
 
